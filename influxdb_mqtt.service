@@ -1,0 +1,13 @@
+[Unit]
+Description=MQTT to InfluxDB Database Bridge
+After=mosquitto.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/influxdb/RaspiMQTTInfluxDB.py
+
+[Install]
+WantedBy=multi-user.target
