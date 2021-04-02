@@ -15,6 +15,7 @@ Módulo HDC1080 | Raspberry Pi | Node MCU | Arduino | Función
 GND (Negro) | GND | GND | GND |Terra
 S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata)
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
+
 ![HDC1080 con cables soldados](documentacion/imaxes/HDC1080.jpg)
 
 ### Software 
