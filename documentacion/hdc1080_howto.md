@@ -47,8 +47,8 @@ A única biblioteca (AKA librería) dispoñible para poder interactuar cos senso
     Temperature = 19.4 C
     Humidity = 87.2 %
     -----------------
-Tomando ese código como referencia, fixen o script [hdc1080_mqtt.py](sensors/hdc1080_mqtt.py) para publicar as lecturas en MQTT, que colocaremos en `/home/pi/sensors`, así como o servizo [hdc_mqtt.service](services/hdc_mqtt.service) que colocaremos en `/lib/systemd/system/` e que se encarga de iniciar o script en cada arranque da máquina.
-os datos son publicados nos _topic_ `casa/salon/temperaturaHDC` e  `casa/salon/humidadeHDC` cada 5 minutos.
+Tomando ese código como referencia e adaptándoo a Python 3, fixen o script [hdc1080_mqtt.py](sensors/hdc1080_mqtt.py) para publicar as lecturas en MQTT, que colocaremos en `/home/pi/sensors/`, así como o servizo [hdc_mqtt.service](services/hdc_mqtt.service) que colocaremos en `/lib/systemd/system/` e que se encarga de iniciar o script en cada arranque da máquina.
+os datos son publicados nos _topic_ `casa/estudio/temperatura` e  `casa/estudio/humidade` cada 5 minutos.
 
 ### Activación do servizo
 Rexistramos o servizo en Systemd, comprobamos o funcionamento e activamos o inicio automático:

@@ -9,12 +9,6 @@
 * Hai que activar a interface I2C na Raspberry usando a ferramenta `raspi-config`, xa que está desactivada por defecto. O proceso pode ser algo complicado se non temos unha instalación fresca de Raspbian. Engado algúns comandos adicionais que me serviron para ir resolvendo os numerosos atrancos que me foron aparecendo:
 [mais detalles en https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c]
 
-Instalamos os paquetes `python-smbus` e `i2c-tools`
-
-    # apt-get install -y python-smbus i2c-tools
-    # raspi-config <-- acceder á opción 5 Interfacing Options
-
-
 ## Conexión PI <--> Sensor
 ### Cableado (vale tamén para NodeMCU ou Arduino)
 Hai 4 cables que unen o sensor BMP280 co porto I2C. Dous son para a alimentación e outros dous para a transmisión de datos. Resulta bastante práctico para isto usar cable telefónico de 4 fios, que se pode estender varios metros sen problema, aínda que as unións son un pouco fráxiles:
@@ -27,6 +21,11 @@ S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lo
 
 
 ### Software 
+Instalamos os paquetes `python-smbus` e `i2c-tools`
+
+    # apt-get install -y python-smbus i2c-tools
+    # raspi-config <-- acceder á opción 5 Interfacing Options
+
 Comprobamos que todo funciona ben cos seguintes comandos:
 
     $ ls /dev/i2c* /dev/spi*
@@ -63,26 +62,25 @@ Podemos comprobar se todo foi ben executando o script-python de exemplo para pro
     SPI ok!
     done!
 
-Agora só falta escribir un script en Python para facer as lecturas do sensor, [semellante a este de Adafruit](https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test). No meu caso tiven que indicar un enderezo de lectura do sensor (0x76) diferente ao que trae por defecto (0x77). Tomando ese código como referencia, fixen o script [BMP280_mqtt.py](sensors/BMP280_mqtt.py) para publicar as lecturas en MQTT, que colocaremos en `/home/pi/sensors/`, así como o servizo [bmp_mqtt.service](services/bmp_mqtt.service) que colocaremos en `/lib/systemd/system/` e que se encarga de iniciar o script en cada arranque da máquina.
+Agora só falta escribir un script en Python para facer as lecturas do sensor, [semellante a este de Adafruit](https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test). No meu caso tiven que indicar un enderezo de lectura do sensor (0x76) diferente ao que trae por defecto (0x77). Tomando ese código como referencia, para publicar as lecturas en MQTT fixen o script [BMP280_mqtt.py](sensors/BMP280_mqtt.py), que colocaremos en `/home/pi/sensors/`, así como o servizo [bmp_mqtt.service](services/bmp_mqtt.service) que colocaremos en `/lib/systemd/system/` e que se encarga de iniciar o script en cada arranque da máquina.
 
 Os datos son publicados nos _topic_ `casa/estudio2/temperatura` e  `casa/estudio2/presion` cada 5 minutos.
 
 Resta calibrar o sensor de presión para que ofreza a presión relativa adecuada, e configuralo en modo `forced` para que non estea facendo miles de lecturas por minuto, o que consume enerxía innecesaria e ademais quenta o sensor.
 
 ### Activación do servizo
-Unha vez que o arquivo `bmp_mqtt.service` está no cartafol `/lib/systemd/system/` temos que rexistrar o servizo en Systemd, comprobar o funcionamento e activar o inicio automático en cada inicio do sistema:
+Unha vez que o arquivo `bmp_mqtt.service` está no cartafol `/lib/systemd/system/` temos que rexistrar o servizo en __Systemd__, comprobar o funcionamento e activar o inicio automático en cada inicio do sistema:
 
     # systemctl daemon-reload
     # systemctl start bmp_mqtt.service
-    # systemctl status bmp_mqtt.service
-    hdc_mqtt.service - HDC 1080 Pressure and Temperature Sensor Reading and MQTT Communication
-    Loaded: loaded (/lib/systemd/system/hdc_mqtt.service; enabled; vendor preset: enabled)
-    Active: active (running) since Sun 2020-11-15 10:11:03 GMT; 4h 4min ago
-    Main PID: 24250 (python3)
-    Tasks: 1 (limit: 2184)
-    CGroup: /system.slice/hdc_mqtt.service
-           └─24250 /usr/bin/python3 /home/pi/sensors/HDC1080_mqtt.py
-    Nov 15 10:11:03 raspberry1 systemd[1]: Started HDV1080 Pressure and Temperature [...]
+    # systemctl status bmp_mqtt.service 
+    bmp_mqtt.service - BMP280 Pressure and Temperature Sensor Reading and MQTT Communication
+    Loaded: loaded (/lib/systemd/system/bmp_mqtt.service; enabled; vendor preset: enabled)
+    Active: active (running) since Wed 2021-03-31 20:17:12 CEST; 1 day 22h ago
+     Main PID: 579 (python3)
+    Tasks: 1 (limit: 4915)
+     CGroup: /system.slice/bmp_mqtt.service
+           └─579 /usr/bin/python3 /home/pi/sensors/BMP280_mqtt_i2c_pi.py
+    Mar 31 20:17:12 raspinha-USB systemd[1]: Started BMP280 Pressure and Temperature Sensor Reading and MQTT Communication.
+
     # systemctl enable hdc_mqtt.service
-
-
