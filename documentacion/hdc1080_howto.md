@@ -16,7 +16,7 @@ GND (Negro) | GND | GND | GND |Terra
 S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata)
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
 
-![HDC1080 con cables soldados](documentacion/imaxes/HDC1080.jpg)
+![HDC1080 con cables soldados](imaxes/HDC1080.jpg)
 
 ### Software 
 É necesario instalar e activar diversas dependencias para traballar co BUS i2c, tal como se explica no apartado anterior para o sensor BMP. Resumindo, as ordes son:
