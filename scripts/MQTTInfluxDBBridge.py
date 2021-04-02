@@ -1,3 +1,4 @@
+# Copiado de https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/ ©2021 DIYI0T. All rights reserved
 import re
 from typing import NamedTuple
 
@@ -44,9 +45,7 @@ def _parse_mqtt_message(topic, payload):
         measurement = match.group(2)
 #        if measurement == 'status':
 #            return None
-        if location == 'lampara0':
-            return None
-
+        
         return SensorData(location, measurement, float(payload))
     else:
         return None
