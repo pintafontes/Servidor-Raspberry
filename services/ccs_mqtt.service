@@ -1,0 +1,13 @@
+[Unit]
+Description=BMP280 Pressure and Temperature Sensor Reading and MQTT Communication
+After=mosquitto.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/sensors/CCS811_mqtt.py 
+
+[Install]
+WantedBy=multi-user.target

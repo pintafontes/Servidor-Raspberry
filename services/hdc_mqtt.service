@@ -1,0 +1,14 @@
+[Unit]
+Description=HDC1080 Humidity and Temperature Sensor Reading and MQTT Communication
+After=mosquitto.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/sensors/HDC1080_mqtt.py
+
+[Install]
+WantedBy=multi-user.target
+

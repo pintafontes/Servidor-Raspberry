@@ -1,4 +1,5 @@
 <h1>Servidor para IoT sobre RaspberryPi (para uso en interiores)</h1>
+<p>You can also read this file in the <a href="README_en.md">english version</a></p>
 <h2>Software</h2>
 <p>Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferentes servizos para un sistema de IoT básico:
 <ul>

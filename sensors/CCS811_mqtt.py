@@ -1,3 +1,4 @@
+# O sensor CCS811 mide a concentración de certos volátiles orgánicos (tvoc) e mediante un modelo descoñecido deduce a concentración de CO2 equivalente (eco2)
 import time
 import board
 import busio

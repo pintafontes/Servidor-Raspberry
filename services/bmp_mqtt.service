@@ -1,0 +1,15 @@
+[Unit]
+Description=BMP280 Pressure and Temperature Sensor Reading and MQTT Communication
+After=mosquitto.service
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+# Por algun motivo descoñecido o script non funciona se tentamos rexistrar a información nun log
+#ExecStart=/usr/bin/python3 /home/pi/sensors/BMP280_mqtt.py > /home/pi/logs/sensors.log 2>&1
+ExecStart=/usr/bin/python3 /home/pi/sensors/BMP280_mqtt.py 
+
+[Install]
+WantedBy=multi-user.target

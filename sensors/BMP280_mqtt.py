@@ -1,16 +1,15 @@
+# O sensor BMP280 ofrece a temperatura e presión atmosférica, e estando debidamente calibrado, ofrece tamén a altitude. Conectase ao porto I2C da Raspberry
+
 import board
 import digitalio
 import busio
 import time
 import datetime
 import paho.mqtt.client as mqtt
-from datetime import datetime
-
-
-#from adafruit_bmp280 import Adafruit_BMP280_I2C
 import adafruit_bmp280
 
-# Establecemos os parámetros do servidor MQTT
+# Establecemos os parámetros do servidor MQTT.
+# Substitue IP_SERVIDOR_MQTT pola IP do servidor
 broker_IP="IP_SERVIDOR_MQTT"
 client = mqtt.Client("RaspiBMP")
 
@@ -33,15 +32,10 @@ while True:
         temperature = bmp280.temperature
         altitude = bmp280.altitude
 
-        # Obtemos a data e o momento de lectura
-        now = datetime.now()
-        now_string = now.strftime("%d/%m/%Y %H:%M:%S")
-
         # Publicamos mensaxes coa temperatura bmp280 e humidade
 
         # Mensaxe de topic simple simple con valor de temperatura
         client.publish("casa/estudio2/temperatura","{0:0.1f}".format(temperature),qos=0,retain=True)
-
 
         # Mensaxe de topic simple simple con valor de presion
         client.publish("casa/estudio2/presion","{0:0.1f}".format(pressure),qos=0,retain=True)

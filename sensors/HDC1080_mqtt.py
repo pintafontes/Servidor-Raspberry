@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-#
-# Test SDL_Pi_HDC1000
-#
-# June 2017
-#
+# Baseado nos scripts e librería de https://github.com/switchdoclabs/SDL_Pi_HDC1000
+
+# O sensor HDC1080 ofrece a temperatura e prhumidade relativa. Conectase ao porto I2C da Raspberry
 
 #imports
 
@@ -19,7 +17,7 @@ import busio
 import paho.mqtt.client as mqtt
 
 ### Establecemos os parámetros do servidor MQTT
-broker_IP="192.168.1.10"
+broker_IP="IP_SERVIDOR_MQTT"
 client = mqtt.Client("RaspiHDC1080")
 
 # Main Program
@@ -48,4 +46,3 @@ while True:
 
         # Esperamos 5 minutos para volver executar o script
         time.sleep(300)
-
