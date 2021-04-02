@@ -1,10 +1,13 @@
-Conectar un sensor HDC1080 (Humidade e Temperatura) na Raspberry PI
-    • Baseado en:
-        ◦ https://github.com/switchdoclabs/SDL_Pi_HDC1000 para as librerías e software de testeo
-        ◦ http://www.pibits.net/code/raspberry-pi-and-hdc1080-humidity-and-temperature-sensor.php para a descripción da conexión e o testeo de software
-        ◦ https://learn.adafruit.com/adafruit-hdc1008-temperature-and-humidity-sensor-breakout/overview describe o hardware e a conexión a Arduino.
-        ◦ http://www.esp8266learning.com/esp8266-hdc1080-humidity-temperature-sensor.php describe o hardware e a conexión a ESP8266
-    • Conexión: Hai 4 cables:
+<h1>Conectar un sensor HDC1080 (Humidade e Temperatura) na Raspberry PI</h1>
+<p>Baseado en:</p>
+    <ul>
+        <li>https://github.com/switchdoclabs/SDL_Pi_HDC1000 para as librerías e software de testeo</li>
+        <li>http://www.pibits.net/code/raspberry-pi-and-hdc1080-humidity-and-temperature-sensor.php para a descripción da conexión e o testeo de software</li>
+        <li>https://learn.adafruit.com/adafruit-hdc1008-temperature-and-humidity-sensor-breakout/overview describe o hardware e a conexión a Arduino.</li>
+        <li>http://www.esp8266learning.com/esp8266-hdc1080-humidity-temperature-sensor.php describe o hardware e a conexión a ESP8266</li>
+</ul>
+<h2>Conexión á Raspberry</h2>
+Hai 4 cables:
 Módulo HDC1080
 Raspberry Pi
 Node MCU
