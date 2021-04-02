@@ -15,31 +15,25 @@ Módulo HDC1080 | Raspberry Pi | Node MCU | Arduino | Función
 GND (Negro) | GND | GND | GND |Terra
 S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata)
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
+![HDC1080 con cables soldados](documentacion/imaxes/HDC1080.jpg)
 
 ### Software 
 É necesario instalar e activar diversas dependencias para traballar co BUS i2c, tal como se explica no apartado anterior para o sensor BMP. Resumindo, as ordes son:
 
-`# apt-get install -y python-smbus i2c-tools`
-
-`# raspi-config`        <-- acceder á opción 5 Interfacing Options e activar i2c
-
-`$ ls /dev/i2c* /dev/spi*`		<--comprobar que o bus i2c é accesible
-
-`$ i2cdetect -y 1`			<--comprobar que o sensor está no enderezo 0x40
-
-    0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    # apt-get install -y python-smbus i2c-tools
+    # raspi-config              <-- acceder á opción 5 Interfacing Options e activar i2c
+    $ ls /dev/i2c* /dev/spi*	<--comprobar que o bus i2c é accesible
+    $ i2cdetect -y 1			<--comprobar que o sensor está no enderezo 0x40
+        0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
     30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     40: 40 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-`# pip3 install RPI.GPIO `
-
-`# pip3 install adafruit-circuitpython-busdevice `
+    # pip3 install RPI.GPIO
+    # pip3 install adafruit-circuitpython-busdevice
 
 A única biblioteca (AKA librería) dispoñible para poder interactuar cos sensores da familia HDC-10XX está na web https://github.com/switchdoclabs/SDL_Pi_HDC1000. Inclúe unha pequena peza de python2 para probar o sensor:
 
-`$ pi@raspberry1:~/HDC1080 $ python2 testHDC1000.py `
-
+    $ pi@raspberry1:~/HDC1080 $ python2 testHDC1000.py
     Test SDL_Pi_HDC1000 Version 1.1 - SwitchDoc Labs
     Sample uses 0x40 and SwitchDoc HDC1000 Breakout board 
     Program Started at:2020-11-15 12:52:35
@@ -58,12 +52,9 @@ os datos son publicados nos _topic_ `casa/salon/temperaturaHDC` e  `casa/salon/h
 ### Activación do servizo
 Rexistramos o servizo en Systemd, comprobamos o funcionamento e activamos o inicio automático:
 
-`# systemctl daemon-reload`
-
-`# systemctl start hdc_mqtt.service`
-
-`# systemctl status hdc_mqtt.service`
-
+    # systemctl daemon-reload
+    # systemctl start hdc_mqtt.service
+    # systemctl status hdc_mqtt.service
     hdc_mqtt.service - HDC 1080 Pressure and Temperature Sensor Reading and MQTT Communication
     Loaded: loaded (/lib/systemd/system/hdc_mqtt.service; enabled; vendor preset: enabled)
     Active: active (running) since Sun 2020-11-15 10:11:03 GMT; 4h 4min ago
@@ -72,6 +63,6 @@ Rexistramos o servizo en Systemd, comprobamos o funcionamento e activamos o inic
     CGroup: /system.slice/hdc_mqtt.service
            └─24250 /usr/bin/python3 /home/pi/sensors/HDC1080_mqtt.py
     Nov 15 10:11:03 raspberry1 systemd[1]: Started HDV1080 Pressure and Temperature [...]
+    # systemctl enable hdc_mqtt.service
 
-`# systemctl enable hdc_mqtt.service`
 
