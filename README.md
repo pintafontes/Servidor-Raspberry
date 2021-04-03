@@ -24,14 +24,15 @@ Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferent
 | Calidade do aire | CCS-811 | CCS811_mqtt.py | ccs_mqtt.service |  |
 | Temperatura e Humidade Relativa | DHT22 | ─ | ─ | Non recomendado
 
-* Script en Python que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service)
+* Utilización do script-Python de [diyi0t.com](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service). Lamentablemente, este script non é software libre e debemos atopar outra maneira de escribir os datos MQTT en InfluxDB
 ### Por facer (TO-DO)
 
-- [x] Ordenar os arquivos e scripts de forma coherente e sinxela
-
+- [x] Ordenar os arquivos e scripts de forma coherente e sinxela.
+- [ ] Automatizar unha copia de seguridade da base de datos noutro dispositivo diferente.
 - [ ] Crear arquivo de configuración para centralizar variables como enderezos IP, topics, acceso Wifi, etc.
-- [ ] Habilitar acceso seguro desde o exterior aos datos
-- [ ] Publicar os datos dos sensores en formato JSON
+- [ ] Substituir o script `influxdb_mqtt.service` por outro con licencia libre.
+- [ ] Publicar os datos dos sensores en formato JSON.
+- [ ] Habilitar acceso seguro desde o exterior aos datos.
 
 ## Hardware
 
