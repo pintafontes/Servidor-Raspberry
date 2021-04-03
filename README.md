@@ -1,6 +1,10 @@
 # Servidor para IoT sobre RaspberryPi (para uso en interiores)
-Con este proxecto conseguimos usar unha Rasperry Pi 
-You can also read this file in the <a href="README_en.md">english version</a></p>
+You can read a previous version of this file in the <a href="README_en.md">english version</a></p>
+
+Con este proxecto conseguimos usar unha Rasperry Pi 2 ou superior como unha _centralita_ de dispositivos IoT. Ademais conectaremos ao seu porto GPIO un ou máis sensores que nos aportarán datos do lugar onde esta instalada a Raspi.
+
+![Raspberry PI, sensores e Grafana](documentacion/imaxes/raspberry-sensors-and-grafana.jpg)
+
 ## Software
 Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferentes servizos para un sistema de IoT básico:
 
@@ -11,7 +15,7 @@ Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferent
 
 ## Scripts en Python
 + Scripts en Python que __leen os datos__ dos diferentes sensores. Estes datos son publicados como mensaxes MQTT.
-* Scripts de SystemD que inician automáxicamente os anteriores scripts como __servizos__
+* Scripts de SystemD que inician automáxicamente os anteriores scripts como __servizos__.
 
 | Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
 |---| --- | --- | --- | --- |
@@ -31,7 +35,9 @@ Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferent
 
 ## Hardware
 
-* Deseño dunha placa-escudo para conectar os diferentes sensores aos terminais I2C do GPIO
+* Adaptación dunha protoboard para conectar os diferentes sensores aos terminais I2C do GPIO
+
+![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
 
 ### Por facer (TO-DO)
 
