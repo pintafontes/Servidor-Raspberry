@@ -1,5 +1,5 @@
 # Servidor para IoT sobre RaspberryPi (para uso en interiores)
-
+Con este proxecto conseguimos usar unha Rasperry Pi 
 You can also read this file in the <a href="README_en.md">english version</a></p>
 ## Software
 Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferentes servizos para un sistema de IoT básico:
@@ -9,24 +9,25 @@ Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferent
 * Servidor de base de datos IoT: [InfluxDB](https://www.influxdata.com/products/influxdb/)
 * Servidor de gráficos de datos: [Grafana](https://grafana.com/)
 
-Scripts en Python para a lectura de varios sensores:
+## Scripts en Python
++ Scripts en Python que __leen os datos__ dos diferentes sensores. Estes datos son publicados como mensaxes MQTT.
+* Scripts de SystemD que inician automáxicamente os anteriores scripts como __servizos__
 
-
-| Magnitudes | Sensor | Script de toma de datos (/sensors) | Servizo (/services) | Documentación |
+| Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
 |---| --- | --- | --- | --- |
 | Temperatura e Presión Atmosférica | BMP280 | BMP280_mqtt.py | bmp_mqtt.service | [BMP280 HowTo](documentacion/bmp280_howto.md) |
 | Temperatura e Humidade Relativa | HDC1080 | HDC1080_mqtt.py | hdc_mqtt.service | [HDC1080 HowTo](documentacion/hdc1080_howto.md) |
 | Calidade do aire | CCS-811 | CCS811_mqtt.py | ccs_mqtt.service |  |
 | Temperatura e Humidade Relativa | DHT22 | ─ | ─ | Non recomendado
 
-* Script en Python que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB
-* Scripts de SystemD que inician automáxicamente os anteriores scripts como servizos
+* Script en Python que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service)
 ### Por facer (TO-DO)
 
-* Ordenar os arquivos e scripts de forma coherente e sinxela
-* Crear arquivo de configuración para centralizar variables como enderezos IP, topics, acceso Wifi, etc.
-* Habilitar acceso seguro desde o exterior aos datos
-* Publicar os datos dos sensores en formato JSON
+- [x] Ordenar os arquivos e scripts de forma coherente e sinxela
+
+- [ ] Crear arquivo de configuración para centralizar variables como enderezos IP, topics, acceso Wifi, etc.
+- [ ] Habilitar acceso seguro desde o exterior aos datos
+- [ ] Publicar os datos dos sensores en formato JSON
 
 ## Hardware
 
@@ -34,4 +35,4 @@ Scripts en Python para a lectura de varios sensores:
 
 ### Por facer (TO-DO)
 
-* Incluir a comunicación por LORA Monocanle
+- [ ] Incluir a comunicación por LORA Monocanle
