@@ -13,9 +13,50 @@ Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferent
 * Servidor de base de datos IoT: [InfluxDB](https://www.influxdata.com/products/influxdb/)
 * Servidor de gráficos de datos: [Grafana](https://grafana.com/)
 
+## Configuración de Raspberry Pi OS
+1. Instalamos a ISO correspondente na tarxeta SD ou __pendrive (*)__ correspondente. Escribiranse dúas particións no dispositivo:
+  - `BOOT` de tipo FAT32, coa configuración básica de arranque.
+  - `ROOTFS` con toda a estrucutura de arquivos e cartafois do SO.
+2. Activamos o acceso por SSH creando un arquivo baleiro `ssh.txt` na partición `BOOT`.
+3. Debemos usar unha IP fixa para poder comunicarnos co servidor. Ademáis, é preferible usar conexión de cable LAN, que é máis fiable e menos propensa a fallos; pero tampouco debería haber problemas en usar unha rede Wifi. Modificamos o arquivo `/etc/dhcpd.conf` (na partición `ROOTFS`) para configurar os parámetros da rede, comentando ou descomentando as liñas referentes á interface que vaiamos usar (`eth0` para LAN e `wlan0` para wifi).
+```
+# Exemplo de IP estática para LAN:
+interface eth0
+static ip_address=192.168.1.25/24
+static routers=192.168.1.1
+# DNS de Google
+# static domain_name_servers= 8.8.8.8  8.8.4.4
+# DNS de R
+static domain_name_servers= 213.60.205.175
+# Exemplo de IP estática para WIFI:
+interface wlan0
+static ip_address=192.168.1.25/24
+static routers=192.168.1.1
+# DNS de Google
+static domain_name_servers= 8.8.8.8  8.8.4.4
+# DNS de R
+static domain_name_servers= 213.60.205.175
+```
+
+4. Se usamos unha rede Wifi, tamén haberá que incluir as credenciais de acceso á mesma no arquivo `/etc/wpa_supplicant/wpa_supplicant.conf`:
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=ES
+network={
+	ssid="NOME_da_WIFI"
+	psk="CONTRASINAL"
+}
+```
+##### (*) BONUS
+
+É case imprescindible que o SO se instale sobre un pendrive e se execute desde o mesmo para mellorar o rendemento e a fiabilidade. A lectura e escritura de arquivos é máis rápida no pendrive e ademáis as tarxetas SD soen estropearse cando levan un tempo executando un SO, pois non aguantan ben o ritmo de lecura e escritura propio deste uso.
+
+[Instruccións en raspberrypi.org](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md)
+
 ## Scripts en Python
-+ Scripts en Python que __leen os datos__ dos diferentes sensores. Estes datos son publicados como mensaxes MQTT.
-* Scripts de SystemD que inician automáxicamente os anteriores scripts como __servizos__.
+* Scripts en Python que __leen os datos__ dos diferentes sensores. Estes datos son publicados como mensaxes MQTT.
+* Scripts de `Systemd` que inician *automáxicamente* os anteriores scripts como **servizos**.
 
 | Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
 |---| --- | --- | --- | --- |
