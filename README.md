@@ -14,6 +14,11 @@ Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferent
 * Servidor de gráficos de datos: [Grafana](https://grafana.com/)
 
 ## Configuración de Raspberry Pi OS
+
+Se precisas unha axuda máis detallada para comezar coa Raspberry e con GNU/Linux, podes consultar o [titorial de Francisco Moya](https://franciscomoya.gitbooks.io/taller-de-raspberry-pi/content/es/)
+
+### Instalación e arranque
+
 Existen a posibilidade de realizar as seguintes operacións para configurar a Raspberry accedendo en modo gráfico ou cunha pantalla HDMI. Aquí explico o método _headless_, que non precisa pantalla nin teclado.
 1. Instalamos a ISO correspondente na tarxeta SD ou __pendrive (*)__ correspondente. Escribiranse dúas particións no dispositivo:
   - `BOOT` de tipo FAT32, coa configuración básica de arranque.
@@ -64,7 +69,99 @@ ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi 
 + [Instruccións en atareao.es](https://atareao.es/tutorial/raspberry-pi-primeros-pasos/volando-con-la-raspberry-desde-usb/). Vale para os modelos máis novos de RPi.
 + [Instruccións en raspberrypi.org](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md). Vale para os modelos máis novos de RPi.
 
+## Configuración tras o primeiro inicio
+Para traballar con
+Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exitoso:
+
+1. Cambiar o contrasinal por defecto con
+ `$ passwd`
+2. Executar `raspi-config` e axustar o seguinte:
+
+  + `3 Interface Options --> P5 Enable I2C`. Isto usaremolo máis adiante para conectar sensores.
+
+  + `6 Advanced Options --> A1 Expand Filesystem`. O tamaño da partición de sistema creada na instalación é moi pequena e nin sequera se pode actualizar o SO.
+
+  + En caso de que estea sen facer, activar o acceso mediante SSH e configurar a rede.
+
+3. Actualizar o sistema:
+```
+# apt-get update
+# apt-get upgrade
+```
+
+4. Instalar algúns programas útiles para traballar coa Rapsberry PI:
+  + `mc` é un explorador de arquivos para consola que nos permite manipular fácilmente arquivos e cartafoles incluso entre dispositivos da nosa rede.
+  + `screenfetch` ofrece información básica sobre o hardware e o SO.  
+```
+# apt install mc screenfetch
+```
+
+## Configuración para IoT
+
+Debemos instalar e configurar o sistema de comunicacións MQTT, a base de datos InfluxDB e o servidor de gráficos Grafana.
+
+### MQTT e `mosquitto`
+
+MQTT é un protocolo de comunicación simple sobre TCP/IP que encaixa perfectamente no contexto de IoT. Os clientes MQTT intercambian mensaxes, que son pequenos anacos de texto plano máis ou menos estructurado. Usaremos este sistema para transmitir información entre sensores e actuadores.
+
+Esta guia traballa coa versión 3 do protocolo MQTT. Recentemente foi publicada a versión 5, que mellora substancialmente algunhas características pero (por falta de tempo) de momento non podemos adoptar.
+
+A terminoloxía e funcionamento básico do protocolo MQTT é:
++ `broker` e o servidor intermediario que xestiona a entrada e saída de mensaxes. Pode funcionar nun PC ou Raspberry. O  broker mais popular é `mosquitto`, que é software libre.
+
++ Os dispositivos emisores (publishers) e receptor (subscribers) son os dous tipos de clientes, puidendo actuar un dispositivo como emisor e receptor simultáneamente.
+
++ As canles de comunicación (ou asuntos) chámanse `topics` e teñen a forma de etiquetas aniñadas en árbore, como `horta/sensor/temperatura1` ou `casa/andar0/salon/lampara1`.
+
++ Cando se describen canles para subscripcións, o comodín `+` substitúe a un só nivel de asuntos e o comodín `#` substitúe a todos os niveis inferiores. Isto permite que un cliente estea subscrito a varias canles ou asuntos simultáneamente:  `horta/sensor/#`
+
++ Un cliente pode escoitar todas as canles nas que estea subscrito, por exemplo:
+  + `horta/sensor/#/` escoitará todas as mensaxes de todas as canles que colgan de __horta/sensor__.
+
+  + `casa/andar0/salon/lampara/1/#` escoitará todas as mensaxes da lámpara 1.
+
+
++ Un emisor pode enviar mensaxes a calquera das canles. Esta mensaxe recíbea o broker, que verifica os permisos do emisor para esas canles e en caso afirmativo reenvía a mensaxe aos subscriptores.
+
+A información desta pequena guía esta sacada de :
+
++ [Introduction to IoT: Build an MQTT Server Using Raspberry Pi](https://appcodelabs.com/introduction-to-iot-build-an-mqtt-server-using-raspberry-pi) de _appcodelabs.com_.
+
++ [MQTT for Beginners: Tutorials and Course](http://www.steves-internet-guide.com/mqtt-basics-course/) de _steves-internet-guide.com_.
+
++ [Qué son y cómo usar los Topics en MQTT correctamente](https://www.luisllamas.es/que-son-y-como-usar-los-topics-en-mqtt-correctamente) de _luisllamas.es_.
+
+### Instalación e configuración de mosquitto
+
+Os paquetes que instalan o servidor e os clientes en Ubuntu/Debian son
+
+```
+# apt install mosquitto mosquitto-clients
+```
+
+O servidor debería funcionar _out of the box_. Podemos probalo enviando e recibindo mensaxes:
+
++ Para que a nosa máquina se subscriba a unha canle basta con usar o cliente `mosquitto_sub`, indicandolle a IP do broker e o topic
+
+      $ mosquitto_sub -h 192.168.0.25 -t "proba/mensaxes"
+
++ Para que a nosa máquina escriba unha mensaxe nunha canle basta con usar o cliente `mosquitto_pub`, indicandolle a IP do broker, o topic e o contido da mensaxe:
+
+      $ mosquitto_pub -h 192.168.0.25 -t "proba/mensaxes" -m “Mecajonomundo”
+
+### Funcionamento avanzado
+
+Pode ser conveniente coñecer as `Clean Sessions` e as `Persistent Connections`, que xestionan como se conecta un cliente determinado a un broker, así como o tipo de envío que fai cada cliente:
+
++ `Clean Sessions`: (non persistente) o broker non almacena información sobre subscricións ou mensaxes sen enviar para o cliente. Ideal se o cliente só publica mensaxes. Non precisa `ClientID`.
+
++ `Persistent Connections`: (conexión estable ou duradeira) o broker pode almacenar mensaxes para o cliente por se este perde a conexión. Precisa dun `ClientID` único.
+
++ `Retained Messages`: no funcionamento por defecto, unha mensaxe publicada nun momento determinado só será entregada aos clientes que estean conectados nese preciso momento. Publicando a mensaxe coa opción `Retained Messages = TRUE` a última mensaxe recibida polo broker nun asunto sexa conservada por se un cliente se conecta posteriormente. É ideal se publicamos info de sensores ou estados de dispositivos, xa que así a información sempre estará dispoñible. O problema é que en principio non saberemos en que momento se publicou esta mensaxe.
+
+
 ## Scripts en Python
+
 * Scripts en Python que __leen os datos__ dos diferentes sensores. Estes datos son publicados como mensaxes MQTT.
 * Scripts de `Systemd` que inician *automáxicamente* os anteriores scripts como **servizos**.
 
@@ -79,15 +176,16 @@ ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi 
 ### Por facer (TO-DO)
 
 - [x] Ordenar os arquivos e scripts de forma coherente e sinxela.
+- [ ] Habilitar o acceso por SSH mediante claves asimétricas.
 - [ ] Automatizar unha copia de seguridade da base de datos noutro dispositivo diferente.
-- [ ] Crear arquivo de configuración para centralizar variables como enderezos IP, topics, acceso Wifi, etc.
+- [ ] Crear arquivo de configuración para centralizar as variables usadas nos scripts, como enderezos IP, topics, acceso Wifi, etc.
 - [ ] Substituir o script `influxdb_mqtt.service` por outro con licencia libre.
 - [ ] Publicar os datos dos sensores en formato JSON.
 - [ ] Habilitar acceso seguro desde o exterior aos datos.
 
 ## Hardware
 
-* Adaptación dunha protoboard para conectar os diferentes sensores aos terminais I2C do GPIO
+- [ ] Adaptación dunha protoboard para conectar os diferentes sensores aos terminais I2C do GPIO
 
 ![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
 
