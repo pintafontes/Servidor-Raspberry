@@ -28,16 +28,16 @@ Existen a posibilidade de realizar as seguintes operacións para configurar a Ra
 ```
 # Exemplo de IP estática para LAN:
 interface eth0
-static ip_address=192.168.1.25/24
-static routers=192.168.1.1
+static ip_address=192.168.0.5/24
+static routers=192.168.0.1
 # DNS de Google
 # static domain_name_servers=8.8.8.8 8.8.4.4
 # DNS de R
 static domain_name_servers=213.60.205.175
 # Exemplo de IP estática para WIFI:
 interface wlan0
-static ip_address=192.168.1.25/24
-static routers=192.168.1.1
+static ip_address=192.168.0.5/24
+static routers=192.168.0.1
 # DNS de Google
 static domain_name_servers=8.8.8.8 8.8.4.4
 # DNS de R
@@ -84,17 +84,17 @@ Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exito
   + En caso de que estea sen facer, activar o acceso mediante SSH e configurar a rede.
 
 3. Actualizar o sistema:
-```
-# apt-get update
-# apt-get upgrade
-```
+
+        # apt-get update
+        # apt-get upgrade
 
 4. Instalar algúns programas útiles para traballar coa Rapsberry PI:
   + `mc` é un explorador de arquivos para consola que nos permite manipular fácilmente arquivos e cartafoles incluso entre dispositivos da nosa rede.
-  + `screenfetch` ofrece información básica sobre o hardware e o SO.  
-```
-# apt install mc screenfetch
-```
+  + `screenfetch` ofrece información básica sobre o hardware e o SO.
+  + usaremos `git` para descargar os scripts para os sensores.
+
+          # apt install mc screenfetch git
+
 
 ## Configuración para IoT
 
@@ -143,11 +143,11 @@ O servidor debería funcionar _out of the box_. Podemos probalo enviando e recib
 
 + Para que a nosa máquina se subscriba a unha canle basta con usar o cliente `mosquitto_sub`, indicandolle a IP do broker e o topic
 
-      $ mosquitto_sub -h 192.168.0.25 -t "proba/mensaxes"
+      $ mosquitto_sub -h 192.168.0.5 -t proba/mensaxes
 
 + Para que a nosa máquina escriba unha mensaxe nunha canle basta con usar o cliente `mosquitto_pub`, indicandolle a IP do broker, o topic e o contido da mensaxe:
 
-      $ mosquitto_pub -h 192.168.0.25 -t "proba/mensaxes" -m “Mecajonomundo”
+      $ mosquitto_pub -h 192.168.0.5 -t proba/mensaxes -m '“Mecajo no mundo'
 
 ### Funcionamento avanzado
 
@@ -159,10 +159,21 @@ Pode ser conveniente coñecer as `Clean Sessions` e as `Persistent Connections`,
 
 + `Retained Messages`: no funcionamento por defecto, unha mensaxe publicada nun momento determinado só será entregada aos clientes que estean conectados nese preciso momento. Publicando a mensaxe coa opción `Retained Messages = TRUE` a última mensaxe recibida polo broker nun asunto sexa conservada por se un cliente se conecta posteriormente. É ideal se publicamos info de sensores ou estados de dispositivos, xa que así a información sempre estará dispoñible. O problema é que en principio non saberemos en que momento se publicou esta mensaxe.
 
+### Clientes de mqtt
+
+Existen varios clientes que nos poden resulta útiles para usar e analizar o que ocorre na nosa rede de comunicación:
+
++ [mqtt-explorer](http://mqtt-explorer.com/)(PC): este cliente gráfico permite observar todo o tráfico de mensaxes da nosa rede, visualizar a árbore de asuntos, facer gráficas con valores numéricos, revisar o historial, etc. Moi útil para investigar problemas. En linux pode instalarse fácilmente con :
+
+      # snap install mqtt-explorer
++ [Mqtt Dashboard](https://play.google.com/store/apps/details?id=com.app.vetru.mqttdashboard&hl=en&gl=US)(Android): app para o móbil que permite enviar e recibir mensaxes MQTT mediante un panel con actuadores e cadros de control.
 
 ## Scripts en Python
 
-* Scripts en Python que __leen os datos__ dos diferentes sensores. Estes datos son publicados como mensaxes MQTT.
+Boa parte do traballo realizado para poñer a andar este sistema IoT consistiu en construir esta colección de scripts, cuxa función é ler cada un dos sensores conectados á Raspberry Pi e a automatización da súa execución. Os scripts que __leen os datos__ dos diferentes sensores están escritos en Python. Estes datos son publicados como mensaxes MQTT.
+
+__DISCLAIMER__ Eu non son programador. Boa parte do código fíxeno copiando e modificando anacos de código feito por outras persoas e organizacións, moitas veces sen entender o que estaba facendo.
+
 * Scripts de `Systemd` que inician *automáxicamente* os anteriores scripts como **servizos**.
 
 | Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
