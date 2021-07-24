@@ -1,52 +1,13 @@
 # Servidor para IoT sobre RaspberryPi
 NOTE: In the near future there will be an english version of this documentation
 
-## Motivación e _disclaimer_
-
-A motivación inicial do proxecto [IoT na aldea](https://github.com/IoT-na-Aldea) é construir pequenas estacións de medida e actuación para a horta:
-
-+ que sexan baratas e relativamente sinxelas de construir,
-+ que poidan funcionar sen cables para a alimentación ou transmisión de datos,
-+ que sexan resistentes para ser usadas no exterior durante anos,
-+ e que se integren nun sitema IoT de control que funcione de forma segura e fiable.
-
-Eu non teño o coñecemento técnico para conseguir estes oxectivos. Síntome cómodo traballando con GNU/Linux e coa Raspberry Pi, pero sei moi pouco de electrónica, de programación ou de bases de datos. O xusto para copiar e pegar código e esquemas de circuitos e modificalos para que fagan algo parecido ao que necesito.
-
-A maioría dos elementos incorporados ata agora son traballos de outras persoas amparados baixo algunha licencia libre. O que aporta este proxecto é a integración de todos estes elementos.
-
-Así que __perdoa as ñapas__ que vexas, __non sexas moi duro__ cando indiques os erros e ten en conta que __igual non entendo á primeira__ as propostas de mellora que fagas.
-
-Levar adiante este proxecto serve para aprender, descubrir e inventar un montón de cousas. A medida que se avanza e se logran novas prestacións, xurden necesidades e aparecen problemas que son unha oportunidade para entender e aprender algo novo.
-
-O proxecto é bastante complexo e reúne tecnoloxías moi diferentes, desde facer o [código en `C++` para ler a temperatura cun sensor HDC1080](https://github.com/IoT-na-Aldea/Servidor-Raspberry/blob/master/sensors/HDC1080_mqtt.py) ata deseñar e imprimir unha peza de PETG para [poñer o pluviómetro nun poste](https://github.com/IoT-na-Aldea/Estacion-Meteoroloxica).
-
-![Raspberry PI, sensores e Grafana](documentacion/imaxes/raspberry-sensors-and-grafana.jpg)
-
-Agora estou adicando a maioría do tempo a organizar e completar toda a documentación necesaria para que o proxecto poida ser replicado por quen queira, esperando que desta forma outras persoas poidan contribuir coa súa experiencia e coñecementos a lograr a motivación principal.
-
-## Logros e traballo pendente por facer (TO-DO)
-- [x] Montar un servidor local na RPi con MQTT, InfluxDB e Grafana.
-Habilitar o acceso á RPi por SSH mediante claves asimétricas.
-  - [ ] Automatizar unha copia de seguridade da base de datos noutro dispositivo diferente.
-  - [ ] Crear arquivo de configuración para centralizar as variables usadas nos scripts, como enderezos IP, topics, acceso Wifi, etc.
-  - [ ] Substituir o script `influxdb_mqtt.service` por algo con licencia libre.
-  - [ ] Publicar os datos dos sensores en formato JSON.
-- [ ] Montar un servidor público na RPi con MQTT, InfluxDB e Grafana.
-- [x] Construir unha estación meteorolóxica con ESP8266 e comunicación Wifi.
-    - [ ] Substiruir a comunicación Wifi por LORA.
-- [x] Ordenar os arquivos e scripts de forma coherente e sinxela.
-    - [ ]
-- [ ] Deseño e construcción dunha protoboard para conectar os diferentes sensores aos terminais I2C do GPIO
-
-- [ ] Incluir a comunicación por LORA Monocanle
-
 ## Introducción
 
-Con este fase do proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de **I**nternet **o**f **T**hings (**IoT**).
+Con este fase do proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de Internet of Things.
 
 ![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
 
-Comezaremos o proxecto usando a mesma **R**aspberry **Pi** (**RPi**) como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e logo por LORA.
+Comezaremos o proxecto usando a mesma Raspberry Pi como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e no futuro por LORA.
 
 O __S__istema __O__perativo de base (__SO__) que usaremos será [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/), que non é máis que unha distrubución Debian de GNU/Linux. Ademais, na RPi executaremos tres servizos diferentes que compoñen o software de comunicación e procesado dos datos:
 
