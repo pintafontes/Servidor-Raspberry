@@ -4,6 +4,7 @@ NOTE: In the near future there will be an english version of this documentation
 ## Motivación e _disclaimer_
 
 A motivación final deste proxecto é construir pequenas estacións de medida e actuación para a horta:
+
 + que sexan baratas e relativamente sinxelas de construir,
 + que poidan funcionar sen cables para a alimentación ou transmisión de datos,
 + que sexan resistentes para ser usadas no exterior durante anos,
@@ -11,11 +12,13 @@ A motivación final deste proxecto é construir pequenas estacións de medida e 
 
 Eu non teño o coñecemento técnico para cubrir estas necesidades. Síntome cómodo traballando con GNU/Linux e coa Raspberry Pi, pero sei moi pouco de electrónica, de programación ou de bases de datos. O xusto para copiar e pegar código e esquemas de circuitos e modificalos para que fagan algo parecido ao que necesito.
 
+A maioría dos elementos incorporados ata agora son proxectos de outras persoas amparados baixo algunha licencia libre. O que aporta este proxecto é a integración de todos estes elementos.
+
 Así que __perdoa as ñapas__ que vexas, __non sexas moi duro__ cando indiques os erros e ten en conta que __igual non entendo á primeira__ as propostas de mellora que fagas.
 
-O bo é que levar adiante o proxecto estame servindo para aprender, descubrir e inventar un montón de cousas. A medida que avanzo e consigo novos logros, xurden necesidades e aparecen problemas que son unha oporunidade para entender e aprender algo que non sabía.
+Levar adiante este proxecto serve para aprender, descubrir e inventar un montón de cousas. A medida que se avanza e se logran novas prestacións, xurden necesidades e aparecen problemas que son unha oporunidade para entender e aprender algo novo.
 
-O proxecto é moi complexo e engloba cousas como o código en `C++` para ler a temperatura dun sensor HDC1080 ata o deseño e impresión dunha peza de PETG para colocar un pluviómetro nun poste.
+O proxecto é bastante complexo e reúne tecnoloxías moi diferentes, desde facer o código en `C++` para ler a temperatura dun sensor HDC1080 ata deseñar e imprimir unha peza de PETG para poñer o pluviómetro nun poste.
 
 Agora estou adicando a maioría do tempo en organizar e completar toda a documentación necesaria para que o proxecto poida ser replicado por quen queira, esperando que desta forma outras persoas poidan contribuir coa súa experiencia e coñecementos a lograr a motivación principal.
 
