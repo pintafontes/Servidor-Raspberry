@@ -10,25 +10,43 @@ A motivación inicial do proxecto [IoT na aldea](https://github.com/IoT-na-Aldea
 + que sexan resistentes para ser usadas no exterior durante anos,
 + e que se integren nun sitema IoT de control que funcione de forma segura e fiable.
 
-Eu non teño o coñecemento técnico para cubrir estas necesidades. Síntome cómodo traballando con GNU/Linux e coa Raspberry Pi, pero sei moi pouco de electrónica, de programación ou de bases de datos. O xusto para copiar e pegar código e esquemas de circuitos e modificalos para que fagan algo parecido ao que necesito.
+Eu non teño o coñecemento técnico para conseguir estes oxectivos. Síntome cómodo traballando con GNU/Linux e coa Raspberry Pi, pero sei moi pouco de electrónica, de programación ou de bases de datos. O xusto para copiar e pegar código e esquemas de circuitos e modificalos para que fagan algo parecido ao que necesito.
 
-A maioría dos elementos incorporados ata agora son proxectos de outras persoas amparados baixo algunha licencia libre. O que aporta este proxecto é a integración de todos estes elementos.
+A maioría dos elementos incorporados ata agora son traballos de outras persoas amparados baixo algunha licencia libre. O que aporta este proxecto é a integración de todos estes elementos.
 
 Así que __perdoa as ñapas__ que vexas, __non sexas moi duro__ cando indiques os erros e ten en conta que __igual non entendo á primeira__ as propostas de mellora que fagas.
 
-Levar adiante este proxecto serve para aprender, descubrir e inventar un montón de cousas. A medida que se avanza e se logran novas prestacións, xurden necesidades e aparecen problemas que son unha oporunidade para entender e aprender algo novo.
+Levar adiante este proxecto serve para aprender, descubrir e inventar un montón de cousas. A medida que se avanza e se logran novas prestacións, xurden necesidades e aparecen problemas que son unha oportunidade para entender e aprender algo novo.
 
 O proxecto é bastante complexo e reúne tecnoloxías moi diferentes, desde facer o [código en `C++` para ler a temperatura cun sensor HDC1080](https://github.com/IoT-na-Aldea/Servidor-Raspberry/blob/master/sensors/HDC1080_mqtt.py) ata deseñar e imprimir unha peza de PETG para [poñer o pluviómetro nun poste](https://github.com/IoT-na-Aldea/Estacion-Meteoroloxica).
 
-Agora estou adicando a maioría do tempo en organizar e completar toda a documentación necesaria para que o proxecto poida ser replicado por quen queira, esperando que desta forma outras persoas poidan contribuir coa súa experiencia e coñecementos a lograr a motivación principal.
+![Raspberry PI, sensores e Grafana](documentacion/imaxes/raspberry-sensors-and-grafana.jpg)
+
+Agora estou adicando a maioría do tempo a organizar e completar toda a documentación necesaria para que o proxecto poida ser replicado por quen queira, esperando que desta forma outras persoas poidan contribuir coa súa experiencia e coñecementos a lograr a motivación principal.
+
+## Logros e traballo pendente por facer (TO-DO)
+- [x] Montar un servidor local na RPi con MQTT, InfluxDB e Grafana.
+Habilitar o acceso á RPi por SSH mediante claves asimétricas.
+  - [ ] Automatizar unha copia de seguridade da base de datos noutro dispositivo diferente.
+  - [ ] Crear arquivo de configuración para centralizar as variables usadas nos scripts, como enderezos IP, topics, acceso Wifi, etc.
+  - [ ] Substituir o script `influxdb_mqtt.service` por algo con licencia libre.
+  - [ ] Publicar os datos dos sensores en formato JSON.
+- [ ] Montar un servidor público na RPi con MQTT, InfluxDB e Grafana.
+- [x] Construir unha estación meteorolóxica con ESP8266 e comunicación Wifi.
+    - [ ] Substiruir a comunicación Wifi por LORA.
+- [x] Ordenar os arquivos e scripts de forma coherente e sinxela.
+    - [ ]
+- [ ] Deseño e construcción dunha protoboard para conectar os diferentes sensores aos terminais I2C do GPIO
+
+- [ ] Incluir a comunicación por LORA Monocanle
 
 ## Introducción
 
-Con este proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de **I**nternet **o**f **T**hings (**IoT**).
+Con este fase do proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de **I**nternet **o**f **T**hings (**IoT**).
+
+![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
 
 Comezaremos o proxecto usando a mesma **R**aspberry **Pi** (**RPi**) como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e logo por LORA.
-
-![Raspberry PI, sensores e Grafana](documentacion/imaxes/raspberry-sensors-and-grafana.jpg)
 
 O __S__istema __O__perativo de base (__SO__) que usaremos será [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/), que non é máis que unha distrubución Debian de GNU/Linux. Ademais, na RPi executaremos tres servizos diferentes que compoñen o software de comunicación e procesado dos datos:
 
@@ -200,6 +218,8 @@ Boa parte do traballo realizado para poñer a andar este sistema IoT consistiu e
 
 __DISCLAIMER__ Eu non son programador. Boa parte do código fíxeno copiando e modificando anacos de código feito por outras persoas e organizacións, moitas veces sen entender o que estaba facendo.
 
+![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
+
 * Scripts de `Systemd` que inician *automáxicamente* os anteriores scripts como **servizos**.
 
 | Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
@@ -210,22 +230,3 @@ __DISCLAIMER__ Eu non son programador. Boa parte do código fíxeno copiando e m
 | Temperatura e Humidade Relativa | DHT22 | ─ | ─ | Non recomendado
 
 * Utilización do script-Python de [diyi0t.com](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service). Lamentablemente, este script non é software libre e debemos atopar outra maneira de escribir os datos MQTT en InfluxDB
-### Por facer (TO-DO)
-
-- [x] Ordenar os arquivos e scripts de forma coherente e sinxela.
-- [ ] Habilitar o acceso por SSH mediante claves asimétricas.
-- [ ] Automatizar unha copia de seguridade da base de datos noutro dispositivo diferente.
-- [ ] Crear arquivo de configuración para centralizar as variables usadas nos scripts, como enderezos IP, topics, acceso Wifi, etc.
-- [ ] Substituir o script `influxdb_mqtt.service` por outro con licencia libre.
-- [ ] Publicar os datos dos sensores en formato JSON.
-- [ ] Habilitar acceso seguro desde o exterior aos datos.
-
-## Hardware
-
-- [ ] Adaptación dunha protoboard para conectar os diferentes sensores aos terminais I2C do GPIO
-
-![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
-
-### Por facer (TO-DO)
-
-- [ ] Incluir a comunicación por LORA Monocanle
