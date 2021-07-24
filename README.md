@@ -3,7 +3,7 @@ NOTE: In the near future there will be an english version of this documentation
 
 ## Motivación e _disclaimer_
 
-A motivación final deste proxecto é construir pequenas estacións de medida e actuación para a horta:
+A motivación inicial do proxecto [IoT na aldea](https://github.com/IoT-na-Aldea) é construir pequenas estacións de medida e actuación para a horta:
 
 + que sexan baratas e relativamente sinxelas de construir,
 + que poidan funcionar sen cables para a alimentación ou transmisión de datos,
@@ -18,7 +18,7 @@ Así que __perdoa as ñapas__ que vexas, __non sexas moi duro__ cando indiques o
 
 Levar adiante este proxecto serve para aprender, descubrir e inventar un montón de cousas. A medida que se avanza e se logran novas prestacións, xurden necesidades e aparecen problemas que son unha oporunidade para entender e aprender algo novo.
 
-O proxecto é bastante complexo e reúne tecnoloxías moi diferentes, desde facer o código en `C++` para ler a temperatura dun sensor HDC1080 ata deseñar e imprimir unha peza de PETG para poñer o pluviómetro nun poste.
+O proxecto é bastante complexo e reúne tecnoloxías moi diferentes, desde facer o [código en `C++` para ler a temperatura cun sensor HDC1080](https://github.com/IoT-na-Aldea/Servidor-Raspberry/blob/master/sensors/HDC1080_mqtt.py) ata deseñar e imprimir unha peza de PETG para [poñer o pluviómetro nun poste](https://github.com/IoT-na-Aldea/Estacion-Meteoroloxica).
 
 Agora estou adicando a maioría do tempo en organizar e completar toda a documentación necesaria para que o proxecto poida ser replicado por quen queira, esperando que desta forma outras persoas poidan contribuir coa súa experiencia e coñecementos a lograr a motivación principal.
 
