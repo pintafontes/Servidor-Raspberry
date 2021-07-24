@@ -80,9 +80,9 @@ ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi 
 
 #### Nota: usuario normal e superusuario
 
-No meu uso habitual con Linux traballo teño varias pestanas da consola co  usuario normal (pi) e co superusuario (root). Desde a aparición de Ubuntu está totalmente estendido utilizar a orde `sudo` antes dun comando para executala con permisos de superusuario, e así o veredes na inmensa maioría dos titorias.
+No meu uso habitual de Linux teño varias pestanas da consola co  usuario normal (pi) e co superusuario (root). Desde a aparición de Ubuntu está totalmente estendido utilizar a orde `sudo` antes dun comando para executala con permisos de superusuario, e así o veredes na inmensa maioría dos titoriais.
 
-No meu caso a execución normal indícoa antepoñendo o **prompt** `$` do usuario e a execución como superusuario co **prompt** `#` de root.
+Nestas guías a execución normal indícoa antepoñendo o **prompt** `$` do usuario e a execución como superusuario co **prompt** `#` de root.
 
 #### Configuración
 
