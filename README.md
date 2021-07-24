@@ -60,22 +60,23 @@ network={
 	psk="CONTRASINAL"
 }
 ```
-##### (*) BONUS
 
-É case imprescindible que o SO se instale sobre un pendrive e se execute desde o mesmo para mellorar o rendemento e a fiabilidade. A lectura e escritura de arquivos é máis rápida no pendrive e ademáis as tarxetas SD soen estropearse cando levan un tempo executando un SO, pois non aguantan ben o ritmo de lecura e escritura propio deste uso.
+### (*) BONUS
+
+É case imprescindible que o SO se instale sobre un pendrive e se execute desde o mesmo para mellorar o rendemento e a fiabilidade. A lectura e escritura de arquivos é máis rápida no pendrive e ademáis as tarxetas SD soen estropearse cando levan un tempo executando un SO, pois non aguantan ben o ritmo de lectura e escritura propio deste uso.
 
 Dependendo do modelo de RPi que estamos usando, o arranque por USB pode ser directo (modelo `RPi 2B 1.2` en diante) ou iniciado por unha SD (modelo `RPi 2B 1.1` e anteriores). Podemos determinar o modelo executando:
 ```
 # cat /proc/device-tree/model
 Raspberry Pi 2 Model B Rev 1.1
 ```
-ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi coas súas entradas e saídas
+ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi coas súas entradas e saídas.
 
 + [Instruccións usando o arquivo bootcode.bin](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/README.md). Vale para a maioría dos modelos de RPi.
 + [Instruccións en atareao.es](https://atareao.es/tutorial/raspberry-pi-primeros-pasos/volando-con-la-raspberry-desde-usb/). Vale para os modelos máis novos de RPi.
 + [Instruccións en raspberrypi.org](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md). Vale para os modelos máis novos de RPi.
 
-## Configuración tras o primeiro inicio
+### Configuración tras o primeiro inicio
 Para traballar con
 Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exitoso:
 
@@ -105,36 +106,11 @@ Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exito
 
 Debemos instalar e configurar o sistema de comunicacións MQTT, a base de datos InfluxDB e o servidor de gráficos Grafana.
 
-### MQTT e `mosquitto`
+### MQTT e mosquitto
 
-MQTT é un protocolo de comunicación simple sobre TCP/IP que encaixa perfectamente no contexto de IoT. Os clientes MQTT intercambian mensaxes, que son pequenos anacos de texto plano máis ou menos estructurado. Usaremos este sistema para transmitir información entre sensores e actuadores.
+MQTT é un protocolo de comunicación simple sobre TCP/IP que encaixa perfectamente no contexto de IoT. Usaremos este sistema para transmitir información entre sensores e actuadores.
 
-Esta guia traballa coa versión 3 do protocolo MQTT. Recentemente foi publicada a versión 5, que mellora substancialmente algunhas características pero (por falta de tempo) de momento non podemos adoptar.
-
-A terminoloxía e funcionamento básico do protocolo MQTT é:
-+ `broker` e o servidor intermediario que xestiona a entrada e saída de mensaxes. Pode funcionar nun PC ou Raspberry. O  broker mais popular é `mosquitto`, que é software libre.
-
-+ Os dispositivos emisores (publishers) e receptor (subscribers) son os dous tipos de clientes, puidendo actuar un dispositivo como emisor e receptor simultáneamente.
-
-+ As canles de comunicación (ou asuntos) chámanse `topics` e teñen a forma de etiquetas aniñadas en árbore, como `horta/sensor/temperatura1` ou `casa/andar0/salon/lampara1`.
-
-+ Cando se describen canles para subscripcións, o comodín `+` substitúe a un só nivel de asuntos e o comodín `#` substitúe a todos os niveis inferiores. Isto permite que un cliente estea subscrito a varias canles ou asuntos simultáneamente:  `horta/sensor/#`
-
-+ Un cliente pode escoitar todas as canles nas que estea subscrito, por exemplo:
-  + `horta/sensor/#/` escoitará todas as mensaxes de todas as canles que colgan de __horta/sensor__.
-
-  + `casa/andar0/salon/lampara/1/#` escoitará todas as mensaxes da lámpara 1.
-
-
-+ Un emisor pode enviar mensaxes a calquera das canles. Esta mensaxe recíbea o broker, que verifica os permisos do emisor para esas canles e en caso afirmativo reenvía a mensaxe aos subscriptores.
-
-A información desta pequena guía esta sacada de :
-
-+ [Introduction to IoT: Build an MQTT Server Using Raspberry Pi](https://appcodelabs.com/introduction-to-iot-build-an-mqtt-server-using-raspberry-pi) de _appcodelabs.com_.
-
-+ [MQTT for Beginners: Tutorials and Course](http://www.steves-internet-guide.com/mqtt-basics-course/) de _steves-internet-guide.com_.
-
-+ [Qué son y cómo usar los Topics en MQTT correctamente](https://www.luisllamas.es/que-son-y-como-usar-los-topics-en-mqtt-correctamente) de _luisllamas.es_.
+Neste documento hai unha [pequena guía sobre MQTT](documentacion/mqtt_guide.md) para entender mellor o seu funcionamento.
 
 ### Instalación e configuración de mosquitto
 
@@ -154,34 +130,17 @@ O servidor debería funcionar _out of the box_. Podemos probalo enviando e recib
 
       $ mosquitto_pub -h 192.168.0.5 -t proba/mensaxes -m '“Mecajo no mundo'
 
-### Funcionamento avanzado
-
-Pode ser conveniente coñecer as `Clean Sessions` e as `Persistent Connections`, que xestionan como se conecta un cliente determinado a un broker, así como o tipo de envío que fai cada cliente:
-
-+ `Clean Sessions`: (non persistente) o broker non almacena información sobre subscricións ou mensaxes sen enviar para o cliente. Ideal se o cliente só publica mensaxes. Non precisa `ClientID`.
-
-+ `Persistent Connections`: (conexión estable ou duradeira) o broker pode almacenar mensaxes para o cliente por se este perde a conexión. Precisa dun `ClientID` único.
-
-+ `Retained Messages`: no funcionamento por defecto, unha mensaxe publicada nun momento determinado só será entregada aos clientes que estean conectados nese preciso momento. Publicando a mensaxe coa opción `Retained Messages = TRUE` a última mensaxe recibida polo broker nun asunto sexa conservada por se un cliente se conecta posteriormente. É ideal se publicamos info de sensores ou estados de dispositivos, xa que así a información sempre estará dispoñible. O problema é que en principio non saberemos en que momento se publicou esta mensaxe.
-
-### Clientes de mqtt
-
-Existen varios clientes que nos poden resulta útiles para usar e analizar o que ocorre na nosa rede de comunicación:
-
-+ [mqtt-explorer](http://mqtt-explorer.com/)(PC): este cliente gráfico permite observar todo o tráfico de mensaxes da nosa rede, visualizar a árbore de asuntos, facer gráficas con valores numéricos, revisar o historial, etc. Moi útil para investigar problemas. En linux pode instalarse fácilmente con :
-
-      # snap install mqtt-explorer
-+ [Mqtt Dashboard](https://play.google.com/store/apps/details?id=com.app.vetru.mqttdashboard&hl=en&gl=US)(Android): app para o móbil que permite enviar e recibir mensaxes MQTT mediante un panel con actuadores e cadros de control.
-
 ## Scripts en Python
 
-Boa parte do traballo realizado para poñer a andar este sistema IoT consistiu en construir esta colección de scripts, cuxa función é ler cada un dos sensores conectados á Raspberry Pi e a automatización da súa execución. Os scripts que __leen os datos__ dos diferentes sensores están escritos en Python. Estes datos son publicados como mensaxes MQTT.
+Boa parte do traballo realizado para poñer a andar este sistema IoT consistiu en construir esta colección de scripts, cuxa función é ler cada un dos sensores conectados á Raspberry Pi e a automatización da súa execución.
 
-__DISCLAIMER__ Eu non son programador. Boa parte do código fíxeno copiando e modificando anacos de código feito por outras persoas e organizacións, moitas veces sen entender o que estaba facendo.
+Os scripts que __leen os datos__ dos diferentes sensores están escritos en Python. Estes datos son publicados como mensaxes MQTT.
 
-![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
+Tamén son necesarios os scripts de `Systemd` que inician *automáxicamente* os anteriores scripts como _demonios_ ou `daemons`, convertindoos en servizos.
 
-* Scripts de `Systemd` que inician *automáxicamente* os anteriores scripts como **servizos**.
+__DISCLAIMER__: Eu non son programador. Boa parte do código fíxeno copiando e modificando anacos de código feito por outras persoas e organizacións, moitas veces sen entender o que estaba facendo. Aprendín moito polo camiño, pero queda moito que mellorar neste código.
+
+Na documentación sinalada está detallado o proceso que se debe seguir par afacer funcionar cada un dos sensores.
 
 | Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
 |---| --- | --- | --- | --- |
@@ -190,4 +149,5 @@ __DISCLAIMER__ Eu non son programador. Boa parte do código fíxeno copiando e m
 | Calidade do aire | CCS-811 | CCS811_mqtt.py | ccs_mqtt.service |  |
 | Temperatura e Humidade Relativa | DHT22 | ─ | ─ | Non recomendado
 
-* Utilización do script-Python de [diyi0t.com](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service). Lamentablemente, este script non é software libre e debemos atopar outra maneira de escribir os datos MQTT en InfluxDB
+__DISCLAIMER__: Estou usando un script-Python de [diyi0t.com](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service). Comuniqueime co autor para que me aclarase a licencia coa que está publicado. Na súa resposta doume permiso para usar o seu códgo _nos meus proxectos persoais_,  pero non teño claro que ese permiso sirva para publicalo neste repositorio.
+Polo tanto considero que este script non é software libre e debo atopar outra maneira de escribir os datos MQTT en InfluxDB.
