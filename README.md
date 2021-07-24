@@ -26,7 +26,7 @@ Agora estou adicando a maioría do tempo en organizar e completar toda a documen
 
 Con este proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de **I**nternet **o**f **T**hings (**IoT**).
 
-Comezaremos o proxecto usando a mesma __R__aspberry __Pi__ (__RPi__) como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e logo por LORA.
+Comezaremos o proxecto usando a mesma **R**aspberry **Pi** (**RPi**) como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e logo por LORA.
 
 ![Raspberry PI, sensores e Grafana](documentacion/imaxes/raspberry-sensors-and-grafana.jpg)
 
