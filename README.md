@@ -77,7 +77,15 @@ ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi 
 + [Instruccións en raspberrypi.org](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/msd.md). Vale para os modelos máis novos de RPi.
 
 ### Configuración tras o primeiro inicio
-Para traballar con
+
+#### Nota: usuario normal e superusuario
+
+No meu uso habitual con Linux traballo teño varias pestanas da consola co  usuario normal (pi) e co superusuario (root). Desde a aparición de Ubuntu está totalmente estendido utilizar a orde `sudo` antes dun comando para executala con permisos de superusuario, e así o veredes na inmensa maioría dos titorias.
+
+No meu caso a execución normal indícoa antepoñendo o **prompt** `$` do usuario e a execución como superusuario co **prompt** `#` de root.
+
+#### Configuración
+
 Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exitoso:
 
 1. Cambiar o contrasinal por defecto con

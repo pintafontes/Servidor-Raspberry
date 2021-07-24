@@ -10,8 +10,10 @@
 [mais detalles en https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c]
 
 ## Conexión PI <--> Sensor
+
 ### Cableado (vale tamén para NodeMCU ou Arduino)
 Hai 4 cables que unen o sensor BMP280 co porto I2C. Dous son para a alimentación e outros dous para a transmisión de datos. Resulta bastante práctico para isto usar cable telefónico de 4 fios, que se pode estender varios metros sen problema, aínda que as unións son un pouco fráxiles:
+
 Módulo BMP280 | Raspberry Pi | Node MCU | Arduino | Función
 ------------ | -------------| -------------| -------------| -------------
 3v3/5v (Vermello)  | 3v3 | 3v3| 3v3 | Alimentación
@@ -20,7 +22,7 @@ S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
 
 
-### Software 
+### Software
 Instalamos os paquetes `python-smbus` e `i2c-tools`
 
     # apt-get install -y python-smbus i2c-tools
@@ -73,7 +75,7 @@ Unha vez que o arquivo `bmp_mqtt.service` está no cartafol `/lib/systemd/system
 
     # systemctl daemon-reload
     # systemctl start bmp_mqtt.service
-    # systemctl status bmp_mqtt.service 
+    # systemctl status bmp_mqtt.service
     bmp_mqtt.service - BMP280 Pressure and Temperature Sensor Reading and MQTT Communication
     Loaded: loaded (/lib/systemd/system/bmp_mqtt.service; enabled; vendor preset: enabled)
     Active: active (running) since Wed 2021-03-31 20:17:12 CEST; 1 day 22h ago
