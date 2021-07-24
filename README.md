@@ -1,17 +1,41 @@
-# Servidor para IoT sobre RaspberryPi (para uso en interiores)
-NOTE: In the near future there will be an [english version of this documentation](README_en.md)
+# Servidor para IoT sobre RaspberryPi
+NOTE: In the near future there will be an english version of this documentation
 
-Con este proxecto conseguimos usar unha Rasperry Pi 2 ou superior como unha _centralita_ de dispositivos IoT. Ademais conectaremos ao seu porto GPIO un ou máis sensores que nos aportarán datos do lugar onde esta instalada a Raspi.
+## Motivación e _disclaimer_
+
+A motivación final deste proxecto é construir pequenas estacións de medida e actuación para a horta:
++ que sexan baratas e relativamente sinxelas de construir,
++ que poidan funcionar sen cables para a alimentación ou transmisión de datos,
++ que sexan resistentes para ser usadas no exterior durante anos,
++ e que se integren nun sitema IoT de control que funcione de forma segura e fiable.
+
+Eu non teño o coñecemento técnico para cubrir estas necesidades. Síntome cómodo traballando con GNU/Linux e coa Raspberry Pi, pero sei moi pouco de electrónica, de programación ou de bases de datos. O xusto para copiar e pegar código e esquemas de circuitos e modificalos para que fagan algo parecido ao que necesito.
+
+Así que __perdoa as ñapas__ que vexas, __non sexas moi duro__ cando indiques os erros e ten en conta que __igual non entendo á primeira__ as propostas de mellora que fagas.
+
+O bo é que levar adiante o proxecto estame servindo para aprender, descubrir e inventar un montón de cousas. A medida que avanzo e consigo novos logros, xurden necesidades e aparecen problemas que son unha oporunidade para entender e aprender algo que non sabía.
+
+O proxecto é moi complexo e engloba cousas como o código en `C++` para ler a temperatura dun sensor HDC1080 ata o deseño e impresión dunha peza de PETG para colocar un pluviómetro nun poste.
+
+Agora estou adicando a maioría do tempo en organizar e completar toda a documentación necesaria para que o proxecto poida ser replicado por quen queira, esperando que desta forma outras persoas poidan contribuir coa súa experiencia e coñecementos a lograr a motivación principal.
+
+## Introducción
+
+Con este proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de __I__nternet __o__f __T__hings (__IoT__).
+
+Comezaremos o proxecto usando a mesma __R__aspberry __Pi__ (__RPi__) como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e logo por LORA.
 
 ![Raspberry PI, sensores e Grafana](documentacion/imaxes/raspberry-sensors-and-grafana.jpg)
 
-## Software
-Configuración e posta a punto do servidor IoT sobre RaspberyPi. Ofrece diferentes servizos para un sistema de IoT básico:
+O __S__istema __O__perativo de base (__SO__) que usaremos será [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/), que non é máis que unha distrubución Debian de GNU/Linux. Ademais, na RPi executaremos tres servizos diferentes que compoñen o software de comunicación e procesado dos datos:
 
-* Sistema Operativo de base: [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/)
 * Servidor de mensaxería MQTT: [Mosquitto](https://mosquitto.org/)
+
 * Servidor de base de datos IoT: [InfluxDB](https://www.influxdata.com/products/influxdb/)
+
 * Servidor de gráficos de datos: [Grafana](https://grafana.com/)
+
+Hai programas de control e automatización moi populares no mundo IoT, como NodeRED e Home Assistant, pero de momento este proxecto non avanzou o suficiente como para necesitalos.
 
 ## Configuración de Raspberry Pi OS
 
@@ -77,8 +101,7 @@ Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exito
  `$ passwd`
 2. Executar `raspi-config` e axustar o seguinte:
 
-  + `3 Interface Options --> P5 Enable I2C`. Isto usaremolo máis adiante para conectar sensores.
-
+  + `3 Interface Options --> P5 Enable I2C`. Este será o porto no que conectaremos os sensores.
   + `6 Advanced Options --> A1 Expand Filesystem`. O tamaño da partición de sistema creada na instalación é moi pequena e nin sequera se pode actualizar o SO.
 
   + En caso de que estea sen facer, activar o acceso mediante SSH e configurar a rede.
