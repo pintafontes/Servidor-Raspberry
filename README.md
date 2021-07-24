@@ -9,7 +9,7 @@ Con este fase do proxecto conseguimos usar unha Raspberry Pi 2 ou superior como 
 
 Comezaremos o proxecto usando a mesma Raspberry Pi como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e no futuro por LORA.
 
-O __S__istema __O__perativo de base (__SO__) que usaremos será [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/), que non é máis que unha distrubución Debian de GNU/Linux. Ademais, na RPi executaremos tres servizos diferentes que compoñen o software de comunicación e procesado dos datos:
+O **S**istema **O**perativo de base (**SO**) que usaremos será [Raspberry Pi OS Lite](https://www.raspberrypi.org/software/), que non é máis que unha distrubución Debian de GNU/Linux. Ademais, na RPi executaremos tres servizos diferentes que compoñen o software de comunicación e procesado dos datos:
 
 * Servidor de mensaxería MQTT: [Mosquitto](https://mosquitto.org/)
 
@@ -27,8 +27,8 @@ Se precisas unha axuda máis detallada para comezar coa Raspberry e con GNU/Linu
 
 Existen a posibilidade de realizar as seguintes operacións para configurar a Raspberry accedendo en modo gráfico ou cunha pantalla HDMI. Aquí explico o método _headless_, que non precisa pantalla nin teclado.
 1. Instalamos a ISO correspondente na tarxeta SD ou __pendrive (*)__ correspondente. Escribiranse dúas particións no dispositivo:
-  - `BOOT` de tipo FAT32, coa configuración básica de arranque.
-  - `ROOTFS` con toda a estructura de arquivos e cartafois do SO.
+    - `BOOT` de tipo FAT32, coa configuración básica de arranque.
+    - `ROOTFS` con toda a estructura de arquivos e cartafois do SO.
 2. Sen retirar a SD/USB do noso PC, activamos o acceso por SSH creando un arquivo baleiro `ssh.txt` na partición `BOOT`.
 3. Debemos usar unha IP fixa para poder comunicarnos co servidor. Ademáis, é preferible usar conexión de cable LAN, que é máis fiable e menos propensa a fallos; pero tampouco debería haber problemas en usar unha rede Wifi. Modificamos o arquivo `/etc/dhcpcd.conf` (na partición `ROOTFS`) para configurar os parámetros da rede, comentando ou descomentando as liñas referentes á interface que vaiamos usar (`eth0` para LAN e `wlan0` para wifi).
 ```
