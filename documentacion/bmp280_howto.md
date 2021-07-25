@@ -1,15 +1,12 @@
 # Conectar un sensor BMP280 na Raspberry PI
 
-* Baseado en https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test
+Esta guía está baseada en https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test
 
-* Moitos destes sensores véndense coa interface I2C ou coa SPI. A primeira é mais versátil, mentres a segunda é mais rápida. Eu escollo a primeira (mais info https://www.lifewire.com/selecting-between-i2c-and-spi-819003)
+Moitos destes sensores véndense coa interface I2C ou coa SPI. A primeira é mais versátil, mentres a segunda é mais rápida. Máis info en [Selecting Between I2C and SPI for Your Project](https://www.lifewire.com/selecting-between-i2c-and-spi-819003)
 
-* Permite usar Python para facer lecturas de temperatura e presión atmosférica no sensor.
+Hai que activar a interface I2C na Raspberry usando a ferramenta `raspi-config`, xa que está desactivada por defecto. O proceso pode ser algo complicado se non temos unha instalación fresca de Raspbian. Máis detalles en [Adafruit's Raspberry Pi Lesson 4. GPIO Setup](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c)
 
-* Hai que activar a interface I2C na Raspberry usando a ferramenta `raspi-config`, xa que está desactivada por defecto. O proceso pode ser algo complicado se non temos unha instalación fresca de Raspbian. Engado algúns comandos adicionais que me serviron para ir resolvendo os numerosos atrancos que me foron aparecendo:
-[mais detalles en https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c]
-
-## Conexión PI <--> Sensor
+## Conexión entre RPi e BMP280
 
 ### Cableado (vale tamén para NodeMCU ou Arduino)
 Hai 4 cables que unen o sensor BMP280 co porto I2C. Dous son para a alimentación e outros dous para a transmisión de datos. Resulta bastante práctico para isto usar cable telefónico de 4 fios, que se pode estender varios metros sen problema, aínda que as unións son un pouco fráxiles:
@@ -20,7 +17,6 @@ Módulo BMP280 | Raspberry Pi | Node MCU | Arduino | Función
 GND (Negro) | GND | GND | GND |Terra
 S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata)
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
-
 
 ### Software
 
@@ -69,7 +65,7 @@ Podemos comprobar se todo foi ben executando o script-python de exemplo para pro
 
 Agora só falta escribir un script en Python para facer as lecturas do sensor, [semellante a este de Adafruit](https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test).
 Eu tiven que indicar o enderezo `0x76` para a lectura do sensor, diferente ao `0x77` que trae por defecto.
-Para corroborar que o sensor funciona ben, podes usar o script BMP280_test.py baseado no anterior.
+Para corroborar que o sensor funciona ben, podes usar o script `BMP280_test.py` baseado no anterior.
 
     $ python3 test/BMP280_test.py
 
