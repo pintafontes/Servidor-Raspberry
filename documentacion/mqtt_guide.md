@@ -59,6 +59,51 @@ Existen varios clientes que nos poden resulta útiles para usar e analizar o que
       # snap install mqtt-explorer
 + [Mqtt Dashboard](https://play.google.com/store/apps/details?id=com.app.vetru.mqttdashboard&hl=en&gl=US) (Android): app para o móbil que permite enviar e recibir mensaxes MQTT mediante un panel con actuadores e cadros de control.
 
+## Usar un cliente de MQTT en Python3
++ Baseado en http://www.steves-internet-guide.com/into-mqtt-python-client/
+
++ Permite publicar mensaxes nunha rede MQTT con información dispoñible dentro dun script Python.
+
++ É necesario instalar o paquete de Python: `$ pip3 install paho-mqtt`
+
++ Nos scripts úsase a librería paho.mqtt (`import paho.mqtt.client as mqtt`), que precisa como mínimo os seguintes parámetros para funcionar, que poden gardarse en variables ao comezo do código para que sexa máis sinxelo cambialas se fora necesario:
+    + o enderezo IP da máquina onde está o servidor broker de MQTT:</br>
+    `broker_IP="192.168.1.5"`
+
+    + o nome que se lle dá a este cliente (útil para saber no servidor quen se conecta ou quen publica as mensaxes):</br>
+    `client = mqtt.Client("RaspiDHT")`
+
+    + Establécese unha conexión para cada publicación (que se interrompe en poucos segundos):</br>
+    `client.connect(broker_IP)`
+
+    + Publicamos a mensaxe no topic escollido:</br>
+    `client.publish("casa/salon/temp/dht/","Temp = {0:0.1f}ºC".format(temperature))`
+
+Con esta configuración, un cliente que se conecte ao broker terá que esperar a que se publique un dato (cada 5 min) para recibir información. Para mellorar este comportamento, podemos publicar a mensaxe coa opción `retain = True`, polo que o servidor gardará sempre a última mensaxe disponible e será o que reciba o cliente cando se conecte:
+
+    client.publish("/andar1/sensor/1/","Temp = {0:0.1f}ºC".format(temperature),qos=0,retain=True)
+
+A opción `qos=0` implica que as mensaxes envíanse sen acuse de recibo.
+
+O script que lee un sensor DHT na Raspberry e publica en MQTT queda así:
+
+    #!/usr/bin/python
+    import sys
+    import Adafruit_DHT as dht
+    import paho.mqtt.client as mqtt
+    # Establecemos os parámetros do sensor DHT
+    sensor = dht.DHT22
+    pin = 4
+    # Establecemos os parámetros do servidor MQTT
+    broker_IP="192.168.1.5"
+    client = mqtt.Client("RaspiDHT")
+    client.connect(broker_IP)
+    # Facemos lectura da temperatura e humidade:
+    humidity, temperature = dht.read_retry(sensor, pin)
+    # Publicamos unha mensaxe coa temperatura
+    client.publish("casa/salon/temp/dht/","Temp = {0:0.1f}ºC".format(temperature))
+    client.publish("casa/salon/hum/dht/","Hum = {0:0.0f}%".format(humidity))
+
 ## Para saber máis
 
 A información desta pequena guía esta sacada de :
