@@ -23,6 +23,9 @@ S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lo
 
 
 ### Software
+
+#### Comunicación entre RPi e BMP280
+
 Instalamos os paquetes `python-smbus` e `i2c-tools`
 
     # apt-get install -y python-smbus i2c-tools
@@ -55,11 +58,7 @@ No meu caso a execución baixo o usuario normal ($) da erros, así que fíxeno c
     # pip3 install adafruit-circuitpython-bmp280
     # pip3 install adafruit-blinka
 
-Tiven problemas diversos con algúns paquetes que se resolveron forzando algunha reinstalación
-
-    # python3 -m pip install --force-reinstall adafruit-blinka
-
-Podemos comprobar se todo foi ben executando o script-python de exemplo para probar a [biblioteca blinka de ADafruit](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi)
+Podemos comprobar se todo foi ben executando o script-python de exemplo para probar a [biblioteca `blinka` de Adafruit](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi)
 
     $ python3 blinka_test.py
     Hello blinka!
@@ -68,13 +67,40 @@ Podemos comprobar se todo foi ben executando o script-python de exemplo para pro
     SPI ok!
     done!
 
-Agora só falta escribir un script en Python para facer as lecturas do sensor, [semellante a este de Adafruit](https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test). No meu caso tiven que indicar un enderezo de lectura do sensor (0x76) diferente ao que trae por defecto (0x77). Tomando ese código como referencia, para publicar as lecturas en MQTT fixen o script [BMP280_mqtt.py](sensors/BMP280_mqtt.py), que colocaremos en `/home/pi/sensors/`, así como o servizo [bmp_mqtt.service](services/bmp_mqtt.service) que colocaremos en `/lib/systemd/system/` e que se encarga de iniciar o script en cada arranque da máquina.
+Agora só falta escribir un script en Python para facer as lecturas do sensor, [semellante a este de Adafruit](https://learn.adafruit.com/adafruit-bmp280-barometric-pressure-plus-temperature-sensor-breakout/circuitpython-test).
+Eu tiven que indicar o enderezo `0x76` para a lectura do sensor, diferente ao `0x77` que trae por defecto.
+Para corroborar que o sensor funciona ben, podes usar o script BMP280_test.py baseado no anterior.
 
-Os datos son publicados nos _topic_ `casa/estudio2/temperatura` e  `casa/estudio2/presion` cada 5 minutos.
+    $ python3 test/BMP280_test.py
 
-Resta calibrar o sensor de presión para que ofreza a presión relativa adecuada, e configuralo en modo `forced` para que non estea facendo miles de lecturas por minuto, o que consume enerxía innecesaria e ademais quenta o sensor.
+    Temperature: 27.6 C
+    Pressure: 1008.4 hPa
+    Altitude = 39.99 meters
 
-### Activación do servizo
+Con este sensor resta calibralo para que ofreza a presión relativa adecuada, e configuralo en modo `forced` para que non estea facendo miles de lecturas por minuto, o que consume enerxía innecesaria e ademais quenta o sensor.
+
+#### Comunicación entre MQTT e BMP280
+
+Tomando como base o script de Adafruit fixen o script [BMP280_mqtt.py](sensors/BMP280_mqtt.py) que se encarga de tomar as lecturas do sensor e publicalas en MQTT. Terás que modificalo para poñer o enderezo IP do broker MQTT que vaias usar (o da Raspberry) e
+
+Terás que instalar a biblioteca de python para usar o MQTT, se é que aínda non o fixeches anteriormente. En principio, é suficiente con facelo co usuario `pi`:
+
+    $ pip3 install paho-mqtt
+
+Debes modificar `BMP280_mqtt.py` para incluir o enderezo IP do broker MQTT, que no noso caso é o a Raspberry Pi, e tamén indicar os topics nos que se van publicar as mensaxes de presión e temperatura. Este script colocarémolo en `/home/pi/sensors/` (se queres cambiar a localización, deberás modificar tamén o script de systemd). Podes executalo manualmente con
+
+    $ python3 sensors/BMP280_mqtt.py
+
+Os datos son publicados nos _topic_ `casa/salon/temperatura` e  `casa/salon/presion` cada 5 minutos.
+
+#### Execución automática
+
+Para non ter que iniciar o script de forma manual automatizaremos a súa execución definindo un servizo de Systemd, que é unha das maneiras que temos en Linux para estas operacións.
+
+O arquivo [bmp_mqtt.service](services/bmp_mqtt.service) colocarémolo en `/lib/systemd/system/`. É o que se encarga de iniciar o script en cada arranque da máquina.
+
+    # cp bmp_mqtt.service /lib/systemd/system/
+
 Unha vez que o arquivo `bmp_mqtt.service` está no cartafol `/lib/systemd/system/` temos que rexistrar o servizo en __Systemd__, comprobar o funcionamento e activar o inicio automático en cada inicio do sistema:
 
     # systemctl daemon-reload
@@ -89,4 +115,8 @@ Unha vez que o arquivo `bmp_mqtt.service` está no cartafol `/lib/systemd/system
            └─579 /usr/bin/python3 /home/pi/sensors/BMP280_mqtt_i2c_pi.py
     Mar 31 20:17:12 raspinha-USB systemd[1]: Started BMP280 Pressure and Temperature Sensor Reading and MQTT Communication.
 
-    # systemctl enable hdc_mqtt.service
+    # systemctl enable bmp_mqtt.service
+
+Podemos reiniciar a máquina con `# reboot` e comprobar se temos lecturas do sensor no broker mqtt usando, por exemplo, o MQTT Explorer no PC:
+
+![Datos de BMP280 visualizados no MQTT Explorer](imaxes/MQTT_Explorer_BMP280.png)
