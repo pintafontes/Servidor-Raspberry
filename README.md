@@ -61,7 +61,7 @@ network={
 }
 ```
 
-### (*) BONUS
+### (*) Instalación do sistema operativo nunha memoria USB
 
 É case imprescindible que o SO se instale sobre un pendrive e se execute desde o mesmo para mellorar o rendemento e a fiabilidade. A lectura e escritura de arquivos é máis rápida no pendrive e ademáis as tarxetas SD soen estropearse cando levan un tempo executando un SO, pois non aguantan ben o ritmo de lectura e escritura propio deste uso.
 
@@ -71,6 +71,10 @@ Dependendo do modelo de RPi que estamos usando, o arranque por USB pode ser dire
 Raspberry Pi 2 Model B Rev 1.1
 ```
 ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi coas súas entradas e saídas.
+
+**NOTA** Pode ocorrer que o sistema operativo funcione desde unha memoria USB pero necesite unha tarxeta SD para o arranque. Entón algúns cambios feitos coa ferramenta `raspi-config` non se van gardar axeitadamente, pois gárdanse na partición BOOT da memoria USB en vez da partición BOOT da tarxeta SD que o sistema usa para iniciarse.
+
+Se coñecemos a opción afectada, podemos cambiar o seu valor modificando o arquivo `/config.txt` da tarxeta SD a man. Tamén podemos editar o arquivo `/etc/fstab` da partición ROOT do USB para substituir a partición BOOT do sistema.
 
 + [Instruccións usando o arquivo bootcode.bin](https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/README.md). Vale para a maioría dos modelos de RPi.
 + [Instruccións en atareao.es](https://atareao.es/tutorial/raspberry-pi-primeros-pasos/volando-con-la-raspberry-desde-usb/). Vale para os modelos máis novos de RPi.
