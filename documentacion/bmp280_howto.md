@@ -43,7 +43,11 @@ A resposta informanos de que temos activado o bus i2c nº1, pero non o bus SPI (
 
 Agora obtemos como resposta que temos un dispositivo conectado no enderezo 0x76
 
-Instalamos os drivers de Adafruit na Raspberry a través duns paquetes PIP de Python. No meu caso a execución baixo o usuario normal ($) da erros, así que fíxeno co superusuario (#):
+Instalamos os drivers de Adafruit na Raspberry a través como paquetes PIP de Python. Se non o temos, debemos instalar a versión 3 do xestor de paquetes PIP:
+
+    # apt-get install python3-pip
+
+No meu caso a execución baixo o usuario normal ($) da erros, así que fíxeno co superusuario (#):
 
     $ sudo su
     # pip3 install RPI.GPIO
