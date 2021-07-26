@@ -1,5 +1,8 @@
 # Servidor para IoT sobre RaspberryPi
+
 NOTE: In the near future there will be an english version of this documentation
+
+**Este repositorio forma parte do proxecto [IoT no Rural](https://github.com/pintafontes/IoT-Rural)**
 
 ## Introducción
 
