@@ -8,7 +8,7 @@ NOTE: In the near future there will be an english version of this documentation
 
 Con este fase do proxecto conseguimos usar unha Raspberry Pi 2 ou superior como unha _centralita de comunicacións_ para dispositivos de Internet of Things.
 
-![Raspberry PI, escudo e sensores](documentacion/imaxes/raspberry-shield-and-sensors.jpg)
+<img alt="Raspberry PI, escudo e sensores" align="center" src="documentacion/imaxes/raspberry-shield-and-sensors.jpg" width=70%></img>
 
 Comezaremos o proxecto usando a mesma Raspberry Pi como dispositivo IoT, conectando ao seu porto GPIO un ou máis sensores que nos aportarán datos da habitación onde esta colocada a RPi. Posteriormente engadiremos á rede outros sensores conectados a microcontroladores da familia ESP, primeiro por Wifi e no futuro por LORA.
 
