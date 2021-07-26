@@ -72,7 +72,7 @@ Raspberry Pi 2 Model B Rev 1.1
 ```
 ou de forma mais vistosa coa ferramenta `pinout`, que representa a placa da RPi coas súas entradas e saídas.
 
-**NOTA** Pode ocorrer que o sistema operativo funcione desde unha memoria USB pero necesite unha tarxeta SD para o arranque. Entón algúns cambios feitos coa ferramenta `raspi-config` non se van gardar axeitadamente, pois gárdanse na partición BOOT da memoria USB en vez da partición BOOT da tarxeta SD que o sistema usa para iniciarse.
+**NOTA** Pode ocorrer que o sistema operativo funcione desde unha memoria USB pero necesite unha tarxeta SD para o arranque. Entón algúns cambios feitos coa ferramenta `raspi-config` non se van gravar axeitadamente, pois gárdanse na partición BOOT da memoria USB en vez da partición BOOT da tarxeta SD que o sistema usa para iniciarse.
 
 Se coñecemos a opción afectada, podemos cambiar o seu valor modificando o arquivo `/config.txt` da tarxeta SD a man. Tamén podemos editar o arquivo `/etc/fstab` da partición ROOT do USB para substituir a partición BOOT do sistema.
 
