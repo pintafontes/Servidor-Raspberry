@@ -24,7 +24,7 @@ S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lo
 
 Instalamos os paquetes `python-smbus` e `i2c-tools`
 
-    # apt-get install -y python-smbus i2c-tools
+    # apt-get install -y python3-smbus i2c-tools
     # raspi-config <-- acceder á opción 5 Interfacing Options
 
 Comprobamos que todo funciona ben cos seguintes comandos:
