@@ -106,9 +106,9 @@ Debemos levar a cabo os seguintes pasos tras un primeiro inicio de sesión exito
 
 3. Actualizar o sistema:
 
-        # apt-get update
-        # apt-get upgrade
-
+        # apt update
+        # apt full-upgrade
+O primeiro comando actualiza a lista de software dispoñible nos servidores de Raspbian (repositorios) e o segundo descarga e installa todas as actualizaci
 4. Instalar algúns programas útiles para traballar coa Rapsberry PI:
   + `mc` é un explorador de arquivos para consola que nos permite manipular fácilmente arquivos e cartafoles incluso entre dispositivos da nosa rede.
   + `screenfetch` ofrece información básica sobre o hardware e o SO.
