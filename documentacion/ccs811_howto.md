@@ -2,6 +2,12 @@
 
 Esta guía está baseada en [Adafruit CCS811 Air Quality Sensor](https://learn.adafruit.com/adafruit-ccs811-air-quality-sensor/python-circuitpython) e [Adafruit CircuitPython CCS811 Library](https://github.com/adafruit/Adafruit_CircuitPython_CCS811)
 
+Este sensor mide a calidade do aire expresada con dous parámetros:
+
+- **eCO2** (equivalent calculated carbon-dioxide) que é unha estimación indirecta da concentración de CO2.
+
+- **TVOC** (Total Volatile Organic Compound) que mide a concentración total de volátiles orgánicos en ppb (parts per billion = 1/10^9), que inclúen alcoholes, Aadehidos, acetonas, ácidos organicos, aminas, e hidrocarburos alifáticos e aromáticos.
+
 ## Conexión á Raspberry, NodeMCU ou Arduino
 ### Cableado
 Hai 4 cables que unen o sensor CCS811 co porto I2C. Dous son para a alimentación e outros dous para a transmisión de datos. Resulta bastante práctico para isto usar cable telefónico de 4 fios, que se pode estender varios metros sen problema, aínda que as unións son un pouco fráxiles:
@@ -13,21 +19,21 @@ S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
 
 ### Software 
-É necesario instalar e activar diversas dependencias para traballar co BUS i2c, tal como se explica no [*howto* para o sensor BMP](bmp280_howto.md).
+É necesario instalar e activar diversas dependencias para traballar co BUS i2c, tal como se explica de xeito máis detallado no [*howto* para o sensor BMP](bmp280_howto.md).
 
-Ademáis teremos que instalar a librería adafruit-circuitpython-ccs811
- Resumindo, as ordes son:
+Ademáis teremos que instalar a librería adafruit-circuitpython-ccs811.  Resumindo, as ordes son:
 
     # apt update                <-- sincroniza a lista de software dispoñible
     # apt full-upgrade          <-- executa todas as actualizacións posibles
     # apt-get install -y python-smbus i2c-tools
     # raspi-config              <-- acceder á opción 5 Interfacing Options e activar i2c
     $ ls /dev/i2c* /dev/spi*	<--comprobar que o bus i2c é accesible
-    $ i2cdetect -y 1			<--comprobar que o sensor está no enderezo 0x40
+    $ i2cdetect -y 1			<--comprobar que o sensor está no enderezo 0x5a
         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
     30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     50: -- -- -- -- -- -- -- -- -- -- 5a -- -- -- -- --
+    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     # pip3 install RPI.GPIO
     # pip3 install adafruit-circuitpython-busdevice adafruit-circuitpython-ccs811
 
