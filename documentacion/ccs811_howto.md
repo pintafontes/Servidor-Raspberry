@@ -13,7 +13,7 @@ S __D__ A (Verde) | SDA – Pin 3  | SDA – D2 | SDA – A4 | Datos ( __D__ ata
 S __C__ L (Amarelo) | SCL – Pin 5 | SCL – D1 | SCL – A5 | Reloxo (__C__ lock)
 
 ### Software 
-É necesario instalar e activar diversas dependencias para traballar co BUS i2c, tal como se explica no [*howto* para o sensor BMP](documentacion/bmp280_howto.md).
+É necesario instalar e activar diversas dependencias para traballar co BUS i2c, tal como se explica no [*howto* para o sensor BMP](bmp280_howto.md).
 
 Ademáis teremos que instalar a librería adafruit-circuitpython-ccs811
  Resumindo, as ordes son:
