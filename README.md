@@ -164,7 +164,7 @@ A posta en marcha do bus I2C está detallada no titorial do sensor BMP280, sendo
 |---| --- | --- | --- | --- |
 | Temperatura e Presión Atmosférica | BMP280 | BMP280_mqtt.py | bmp_mqtt.service | [BMP280 HowTo](documentacion/bmp280_howto.md) |
 | Temperatura e Humidade Relativa | HDC1080 | HDC1080_mqtt.py | hdc_mqtt.service | [HDC1080 HowTo](documentacion/hdc1080_howto.md) |
-| Calidade do aire | CCS-811 | CCS811_mqtt.py | ccs_mqtt.service |  |
+| Calidade do aire | CCS-811 | CCS811_mqtt.py | ccs_mqtt.service | [CCS811 HowTo](documentacion/ccs811_howto.md) | |
 | Temperatura e Humidade Relativa | DHT22 | ─ | ─ | Non recomendado
 
 __DISCLAIMER__: Estou usando un script-Python de [diyi0t.com](https://diyi0t.com/visualize-mqtt-data-with-influxdb-and-grafana/) que extrae os datos de certas mensaxes MQTT e os escribe na base de datos InfluxDB: [influxdb_mqtt.service](services/influxdb_mqtt.service). Comuniqueime co autor para que me aclarase a licencia coa que está publicado. Na súa resposta doume permiso para usar o seu códgo _nos meus proxectos persoais_,  pero non teño claro que ese permiso sirva para publicalo neste repositorio.
