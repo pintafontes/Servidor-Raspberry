@@ -30,7 +30,7 @@ while True:
     client.publish("casa/estudio/eco2","{0:0.0f}".format(eco2),qos=0,retain=True)
 
     # Mensaxe de topic simple simple con valor de presion
-    client.publish("casa/estudio/tvov","{0:0.0f}".format(tvoc),qos=0,retain=True)
+    client.publish("casa/estudio/tvoc","{0:0.0f}".format(tvoc),qos=0,retain=True)
 
     # Esperamos 30 segundos para volver executar o script
     time.sleep(30)
