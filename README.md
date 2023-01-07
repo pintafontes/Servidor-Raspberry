@@ -148,7 +148,7 @@ O servidor debería funcionar _out of the box_. Podemos probalo enviando e recib
 
 ## Scripts en Python
 
-Boa parte do traballo realizado para poñer a andar este sistema IoT consistiu en construir esta colección de scripts, cuxa función é ler cada un dos sensores conectados á Raspberry Pi e a automatización da súa execución.
+Boa parte do traballo realizado para poñer a andar este sistema IoT consistiu en construir esta colección de scripts, cuxa función é recabar os datos de cada un dos sensores conectados á Raspberry Pi e automatizar a execución destes scripts.
 
 Os scripts que __leen os datos__ dos diferentes sensores están escritos en Python. Estes datos son publicados como mensaxes MQTT.
 
@@ -156,7 +156,9 @@ Tamén son necesarios os scripts de `Systemd` que inician *automáxicamente* os 
 
 __DISCLAIMER__: Eu non son programador. Boa parte do código fíxeno copiando e modificando anacos de código feito por outras persoas e organizacións, moitas veces sen entender o que estaba facendo. Aprendín moito polo camiño, pero queda moito que mellorar neste código.
 
-Na documentación sinalada está detallado o proceso que se debe seguir par afacer funcionar cada un dos sensores.
+Na documentación sinalada está detallado o proceso que se debe seguir para facer funcionar cada un dos sensores.
+
+A posta en marcha do bus I2C está detallada no titorial do sensor BMP280, sendo nos outros casos innecesario. Se comezas con un sensor diferente, bótalle un vistazo á guia de BMP280 se tes problemas co I2C.
 
 | Magnitude | Sensor | Script de lectura (/sensors) | Servizo (/services) | Documentación |
 |---| --- | --- | --- | --- |
