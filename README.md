@@ -136,7 +136,12 @@ Os paquetes que instalan o servidor e os clientes en Ubuntu/Debian son
 # apt install mosquitto mosquitto-clients
 ```
 
-O servidor debería funcionar _out of the box_. Podemos probalo enviando e recibindo mensaxes:
+O servidor debería funcionar _out of the box_. Quizais debamos axustar a configuración para que acepte coneións anónimas desde calquera IP (tal como temos o sistema, so serían dispositivos da rede local). Engadimos ao arquivo `etc/mosquitto/conf.d/mosquitto.conf` as liñas:
+
+      allow_anonymous true
+      listener 1883 0.0.0.0
+
+Podemos probalo enviando e recibindo mensaxes:
 
 + Para que a nosa máquina se subscriba a unha canle basta con usar o cliente `mosquitto_sub`, indicandolle a IP do broker e o topic
 
@@ -145,6 +150,11 @@ O servidor debería funcionar _out of the box_. Podemos probalo enviando e recib
 + Para que a nosa máquina escriba unha mensaxe nunha canle basta con usar o cliente `mosquitto_pub`, indicandolle a IP do broker, o topic e o contido da mensaxe:
 
       $ mosquitto_pub -h 192.168.0.5 -t proba/mensaxes -m '“Mecajo no mundo'
+
++ Podemos revisar o estado do servizo `mosquitto.service` coa orde:
+
+      # systemctl status mosquitto.service
+      
 
 ## Scripts en Python
 
