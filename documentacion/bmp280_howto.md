@@ -77,7 +77,7 @@ Con este sensor resta calibralo para que ofreza a presión relativa adecuada, e 
 
 #### Comunicación entre MQTT e BMP280
 
-Tomando como base o script de Adafruit fixen o script [BMP280_mqtt.py](sensors/BMP280_mqtt.py) que se encarga de tomar as lecturas do sensor e publicalas en MQTT. Terás que modificalo para poñer o enderezo IP do broker MQTT que vaias usar (o da Raspberry) e
+Tomando como base o script de Adafruit, fixen o script [BMP280_mqtt.py](sensors/BMP280_mqtt.py) que se encarga de tomar as lecturas do sensor e publicalas en MQTT. **Modifícao para poñer o enderezo IP do broker MQTT** que vaias usar (o da Raspberry).
 
 Terás que instalar a biblioteca de python para usar o MQTT, se é que aínda non o fixeches anteriormente. En principio, é suficiente con facelo co usuario `pi`:
 
