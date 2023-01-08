@@ -1,5 +1,5 @@
 [Unit]
-Description=BMP280 Pressure and Temperature Sensor Reading and MQTT Communication
+Description=CCS811 Air Quality Sensor Reading and MQTT Communication
 After=mosquitto.service
 
 [Service]
