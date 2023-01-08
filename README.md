@@ -136,7 +136,7 @@ Os paquetes que instalan o servidor e os clientes en Ubuntu/Debian son
 # apt install mosquitto mosquitto-clients
 ```
 
-O servidor debería funcionar _out of the box_. Quizais debamos axustar a configuración para que acepte coneións anónimas desde calquera IP (tal como temos o sistema, so serían dispositivos da rede local). Engadimos ao arquivo `etc/mosquitto/conf.d/mosquitto.conf` as liñas:
+O servidor debería funcionar _out of the box_. Desde a versión 1.7 debemos axustar a configuración para que acepte coneións anónimas desde calquera IP (tal como temos o sistema, so serían dispositivos da rede local). Engadimos ao arquivo `etc/mosquitto/conf.d/mosquitto.conf` as liñas:
 
       allow_anonymous true
       listener 1883 0.0.0.0
