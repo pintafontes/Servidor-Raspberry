@@ -67,7 +67,7 @@ Agora só falta escribir un script en Python para facer as lecturas do sensor, [
 Eu tiven que indicar o enderezo `0x76` para a lectura do sensor, diferente ao `0x77` que trae por defecto.
 Para corroborar que o sensor funciona ben, podes usar o script `BMP280_test.py` baseado no anterior.
 
-    $ python3 test/BMP280_test.py
+    $ python3 tests/BMP280_test.py
 
     Temperature: 27.6 C
     Pressure: 1008.4 hPa
